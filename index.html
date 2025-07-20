@@ -160,56 +160,47 @@
 
         /* Theme Toggle Button */
         .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--skill-tag-bg);
+            padding: 6px;
+            background: transparent;
             border: 1px solid var(--border-color);
-            border-radius: 15px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 22px;
-            height: 22px;
-            background: var(--text-primary);
-            border-radius: 50%;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        [data-theme="light"] .theme-toggle::before {
-            transform: translateX(30px);
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
         }
         .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
             position: absolute;
-            top: 6px;
-            width: 18px;
-            height: 18px;
-            color: var(--text-quaternary);
-            transition: opacity 0.3s ease;
         }
-        .theme-icon.sun {
-            right: 6px;
-            opacity: 1;
-        }
-        .theme-icon.moon {
-            left: 6px;
-            opacity: 1;
+        .theme-toggle:hover .theme-icon {
+            color: white;
         }
         [data-theme="light"] .theme-icon.sun {
-            opacity: 1; /* Sun visible in light mode */
+            opacity: 1;
+            position: relative;
+            color: var(--text-primary) !important;
         }
         [data-theme="light"] .theme-icon.moon {
-            opacity: 0; /* Moon hidden in light mode */
+            opacity: 0;
+            position: absolute;
         }
         [data-theme="dark"] .theme-icon.sun {
-            opacity: 0; /* Sun hidden in dark mode */
+            opacity: 0;
+            position: absolute;
         }
         [data-theme="dark"] .theme-icon.moon {
-            opacity: 1; /* Moon visible in dark mode */
+            opacity: 1;
+            position: relative;
+            color: var(--text-primary) !important;
         }
 
         /* Theme-specific text colors */
@@ -242,22 +233,22 @@
                 <a href="#education" class="text-slate-300 hover:text-sky-400 transition">Education</a>
                 <a href="#projects" class="text-slate-300 hover:text-sky-400 transition">Projects</a>
                 <a href="#skills" class="text-slate-300 hover:text-sky-400 transition">Skills</a>
+                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg transition">Contact</a>
                 <!-- Theme Toggle -->
                 <div class="theme-toggle" id="theme-toggle">
                     <i data-lucide="sun" class="theme-icon sun"></i>
                     <i data-lucide="moon" class="theme-icon moon"></i>
                 </div>
-                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg transition">Contact</a>
             </div>
             <div class="md:hidden flex items-center space-x-4">
+                <button id="mobile-menu-button" class="text-white">
+                    <i data-lucide="menu"></i>
+                </button>
                 <!-- Mobile Theme Toggle -->
                 <div class="theme-toggle" id="mobile-theme-toggle">
                     <i data-lucide="sun" class="theme-icon sun"></i>
                     <i data-lucide="moon" class="theme-icon moon"></i>
                 </div>
-                <button id="mobile-menu-button" class="text-white">
-                    <i data-lucide="menu"></i>
-                </button>
             </div>
         </nav>
         <!-- Mobile Menu -->
@@ -303,14 +294,14 @@
                         <p class="font-semibold">Apr 2025 - Present</p>
                     </div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Robotics Developer Intern · Aivot Robotics</h4>
+                        <h4 class="text-xl font-bold text-white">Robotics Developer · Aivot Robotics</h4>
                         <p class="mt-3 text-slate-400">
-                            Internship focused on the intersection of advanced robotics and artificial intelligence. Key responsibilities included developing and implementing novel solutions for robotic perception and manipulation.
+                            Role focused on the intersection of advanced robotics and artificial intelligence. Key responsibilities include developing and implementing novel solutions for robotic perception and manipulation.
                         </p>
                         <ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside">
-                            <li>Developed 'GraspNet', a solution for grasping unknown objects using Mask and Depth images.</li>
-                            <li>Worked extensively with ROS2 for robotic software development.</li>
-                            <li>Applied AI techniques for real-time object detection and segmentation.</li>
+                            <li>Develop 'GraspNet', a solution for grasping unknown objects using Mask and Depth images.</li>
+                            <li>Work extensively with ROS2 for robotic software development.</li>
+                            <li>Apply AI techniques for real-time object detection and segmentation.</li>
                         </ul>
                     </div>
                 </div>
