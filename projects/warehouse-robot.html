@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <script>
+        // Set theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Warehouse Robot | Hamza Feroze</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="../assets/js/tailwind.js"></script>
+    <link href="../assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="../assets/js/lucide.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(37, 45, 61, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-effect:hover {
+            box-shadow: 0 12px 48px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #06b6d4;
+            margin-bottom: 2rem;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 100%);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        .phase-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
+            border: 2px dashed #06b6d4;
+            border-radius: 0.75rem;
+            padding: 3rem;
+            text-align: center;
+            color: #0369a1;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            color: white;
+        }
+
+        .impact-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
+            position: absolute;
+        }
+        .theme-toggle:hover .theme-icon {
+            color: white;
+        }
+        [data-theme="light"] .theme-icon.sun {
+            opacity: 0;
+            position: absolute;
+        }
+        [data-theme="light"] .theme-icon.moon {
+            opacity: 1;
+            position: relative;
+            color: var(--text-primary) !important;
+        }
+        [data-theme="dark"] .theme-icon.sun {
+            opacity: 1;
+            position: relative;
+            color: var(--text-primary) !important;
+        }
+        [data-theme="dark"] .theme-icon.moon {
+            opacity: 0;
+            position: absolute;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Back to Portfolio
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+                <a href="../index.html" class="text-xl font-bold gradient-text">Hamza Feroze</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="warehouse" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">Checkpoint Project</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Autonomous Warehouse Robot</h1>
+                <p class="text-2xl font-semibold mb-6 opacity-90">The Construct Robotics Masterclass</p>
+                <p class="text-xl opacity-90 leading-relaxed max-w-3xl mx-auto">
+                    Completed a three-phase automation process for the RB-1 robot, progressing from hardcoded navigation to full autonomy using SLAM and advanced path planning.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-5xl">
+
+        <!-- Overview -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Project Overview</h2>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary); mb-4">
+                This checkpoint project focused on progressively increasing the autonomy of the RB-1 warehouse robot to navigate and handle objects in a simulated warehouse environment. The project evolved through three distinct phases, each building upon the previous one to achieve full autonomous operation.
+            </p>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                Starting from basic hardcoded navigation, the robot gradually developed advanced capabilities including simultaneous localization and mapping (SLAM), obstacle detection, and fully autonomous path planning - demonstrating the complete progression from manual control to intelligent autonomy.
+            </p>
+        </section>
+
+        <!-- My Role -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">My Role</h2>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                I developed the navigation and mapping software for all three phases of the project, implementing and tuning algorithms for each level of autonomy. This included:
+            </p>
+            <ul class="mt-4 space-y-3 style="color: var(--text-tertiary);" text-lg">
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Programming hardcoded navigation paths and object manipulation routines</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Implementing SLAM algorithms for real-time mapping and localization</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Configuring path planning algorithms for autonomous navigation</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Tuning sensor processing and obstacle detection parameters</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Testing and validating each phase of automation in simulation</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Three-Phase Development -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Three-Phase Development Process</h2>
+
+            <!-- Phase 1 -->
+            <div class="phase-card">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="phase-number">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">Phase 1: Hardcoded Navigation</h3>
+                        <p class="style="color: var(--text-tertiary);" font-semibold mb-3">Foundation - Predefined Path Following</p>
+                    </div>
+                </div>
+                <div class="ml-16">
+                    <p class="leading-relaxed" style="color: var(--text-tertiary); mb-3">
+                        In the initial phase, the robot followed a predefined, hardcoded path to complete its warehouse tasks. The robot was programmed with specific coordinates and commands to:
+                    </p>
+                    <ul class="space-y-2 style="color: var(--text-tertiary);"">
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Navigate to a specific shelf location using predetermined waypoints</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Lift and attach the shelf to the robot base</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Transport the shelf along a fixed route to the drop-off location</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Release the shelf at the designated position</span>
+                        </li>
+                    </ul>
+                    <p class="style="color: var(--text-tertiary);" italic mt-3">
+                        This phase established the basic motion control and object manipulation capabilities needed for warehouse operations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-card">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="phase-number">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">Phase 2: SLAM-Based Mapping</h3>
+                        <p class="style="color: var(--text-tertiary);" font-semibold mb-3">Environmental Awareness - Mapping & Localization</p>
+                    </div>
+                </div>
+                <div class="ml-16">
+                    <p class="leading-relaxed" style="color: var(--text-tertiary); mb-3">
+                        The second phase introduced Simultaneous Localization and Mapping (SLAM), enabling the robot to understand its environment dynamically:
+                    </p>
+                    <ul class="space-y-2 style="color: var(--text-tertiary);"">
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Real-time mapping of the warehouse environment using laser scanner data</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Continuous localization to track the robot's position within the generated map</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Obstacle detection capabilities using sensor fusion</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Basic path planning to navigate around detected obstacles</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Map storage and reusability for future navigation tasks</span>
+                        </li>
+                    </ul>
+                    <p class="style="color: var(--text-tertiary);" italic mt-3">
+                        This phase introduced environmental perception, allowing the robot to adapt to changes in the warehouse layout.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-card">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="phase-number">3</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">Phase 3: Full Autonomy</h3>
+                        <p class="style="color: var(--text-tertiary);" font-semibold mb-3">Complete Independence - Autonomous Operation</p>
+                    </div>
+                </div>
+                <div class="ml-16">
+                    <p class="leading-relaxed" style="color: var(--text-tertiary); mb-3">
+                        The final phase achieved complete autonomous operation, where the robot could independently plan and execute warehouse tasks:
+                    </p>
+                    <ul class="space-y-2 style="color: var(--text-tertiary);"">
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Autonomous navigation using the previously generated map</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Dynamic path planning to reach any specified goal location</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Real-time obstacle avoidance and re-planning capabilities</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Autonomous shelf identification, pickup, and delivery</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Complete task execution from start to finish without human intervention</span>
+                        </li>
+                    </ul>
+                    <p class="style="color: var(--text-tertiary);" italic mt-3">
+                        This phase demonstrated true robotic autonomy, with the robot making intelligent decisions to accomplish warehouse logistics tasks.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Used -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Technologies Used</h2>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="tech-tag">ROS (Robot Operating System)</span>
+                <span class="tech-tag">SLAM (Gmapping)</span>
+                <span class="tech-tag">Path Planning</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">C++</span>
+                <span class="tech-tag">Navigation Stack</span>
+                <span class="tech-tag">Gazebo Simulation</span>
+                <span class="tech-tag">RViz Visualization</span>
+                <span class="tech-tag">Laser Scanner</span>
+                <span class="tech-tag">Sensor Fusion</span>
+                <span class="tech-tag">RB-1 Robot</span>
+                <span class="tech-tag">Obstacle Avoidance</span>
+            </div>
+        </section>
+
+        <!-- Screenshots -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Simulation Screenshots</h2>
+            <div class="screenshot-placeholder">
+                <i data-lucide="image" class="w-16 h-16 mx-auto mb-4 text-cyan-600"></i>
+                <p class="text-lg">Simulation Environment - RB-1 Warehouse Robot</p>
+                <p class="text-sm mt-2">Screenshots showing robot navigation, SLAM mapping, and autonomous shelf handling</p>
+            </div>
+        </section>
+
+        <!-- Impact & Learning Outcomes -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Impact & Learning Outcomes</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">3</div>
+                    <div class="text-sm">Phases of Autonomy</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">100%</div>
+                    <div class="text-sm">Autonomous Navigation</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">Real-time</div>
+                    <div class="text-sm">SLAM Mapping</div>
+                </div>
+            </div>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary); mb-4">
+                This project demonstrated a comprehensive understanding of robotic autonomy progression. By developing the robot through three distinct phases, I gained hands-on experience with fundamental robotics concepts:
+            </p>
+            <ul class="space-y-2 style="color: var(--text-tertiary);"">
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Motion control and trajectory planning</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Simultaneous localization and mapping (SLAM) implementation</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Autonomous path planning and obstacle avoidance</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Sensor integration and data processing</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Robotic manipulation for warehouse logistics</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Navigation -->
+        <div class="mt-12">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span>Back to Portfolio</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8" style="color: var(--text-tertiary);">
+        <p class="font-medium">Designed & Built with <span style="color: #14b8a6;">♥</span> by <span class="gradient-text">Hamza Feroze</span></p>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>

@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" data-theme="light">
+<html lang="en" class="scroll-smooth">
 <head>
+    <script>
+        // Set theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamza Feroze - Robotics Developer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="assets/js/tailwind.js"></script>
+    <link href="assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="assets/js/lucide.min.js"></script>
     <style>
         :root {
             /* Dark theme colors - softer, more colorful */
@@ -135,9 +141,9 @@
         }
         .gradient-text {
             background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             font-weight: 800;
         }
 
@@ -327,22 +333,22 @@
             color: white;
         }
         [data-theme="light"] .theme-icon.sun {
-            opacity: 1;
-            position: relative;
-            color: var(--text-primary) !important;
+            opacity: 0;
+            position: absolute;
         }
         [data-theme="light"] .theme-icon.moon {
-            opacity: 0;
-            position: absolute;
-        }
-        [data-theme="dark"] .theme-icon.sun {
-            opacity: 0;
-            position: absolute;
-        }
-        [data-theme="dark"] .theme-icon.moon {
             opacity: 1;
             position: relative;
             color: var(--text-primary) !important;
+        }
+        [data-theme="dark"] .theme-icon.sun {
+            opacity: 1;
+            position: relative;
+            color: var(--text-primary) !important;
+        }
+        [data-theme="dark"] .theme-icon.moon {
+            opacity: 0;
+            position: absolute;
         }
 
         /* Theme-specific text colors */
@@ -530,13 +536,17 @@
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">Oct 2024 - Present</p></div>
                     <div class="md:col-span-3">
                         <h4 class="text-xl font-bold text-white">AI Developer · IIoT Solutions</h4>
-                        <p class="mt-3 text-slate-400">Developed a full-stack AI chatbot with a Vision RAG system, integrating advanced NLP and computer vision. This involved extensive experimentation with various local LLMs (Qwen, Llama3, DeepSeek) and retrieval strategies, leading to the implementation of a cross-encoder re-ranking pipeline to significantly improve context relevance. Architected the final solution using FastAPI for a high-performance, asynchronous backend.</p>
+                        <p class="mt-3 text-slate-400">Developed a full-stack AI chatbot with a Vision RAG system, integrating advanced NLP and computer vision. This involved extensive experimentation with various local LLMs (Qwen, Llama3, DeepSeek) and retrieval strategies, leading to the implementation of a cross-encoder re-ranking pipeline to significantly improve context relevance.</p>
                         <ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside">
                             <li>Built a high-performance FastAPI backend for efficient API communication.</li>
                             <li>Developed an interactive React frontend for a seamless user experience.</li>
                             <li>Implemented a hybrid search system with cross-encoder re-ranking for superior accuracy.</li>
                             <li>Engineered a non-blocking ingestion pipeline using Celery and Redis for scalability.</li>
                         </ul>
+                        <a href="experience/iiot-ai-developer.html" class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(6, 182, 212, 0.5)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)';">
+                            <span>View Full Details</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
                     </div>
                 </div>
                 <!-- Job 3 -->
@@ -597,13 +607,28 @@
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
+                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024 - 2027</p></div>
+                    <div class="md:col-span-3">
+                        <h4 class="text-xl font-bold text-white">Bachelor's Degree in Computer Science</h4>
+                        <p class="mt-1 text-slate-300">Aptech / University of Bolton</p>
+                        <span class="inline-block mt-3 text-sm font-medium text-quaternary border border-slate-400/30 rounded-full px-4 py-1">
+                            Ongoing
+                        </span>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024</p></div>
                     <div class="md:col-span-3">
                         <h4 class="text-xl font-bold text-white">Robotics Masterclass</h4>
                         <p class="mt-1 text-slate-300">The Construct / Barcelona, Spain</p>
-                        <a href="robot_certificate.png" target="_blank" class="inline-block mt-3 text-sm font-medium text-sky-400 border border-sky-400/50 rounded-full px-4 py-1 hover:bg-sky-400/10 transition">
-                            View Certificate
-                        </a>
+                        <div class="flex gap-3 mt-3 flex-wrap">
+                            <a href="education/robotics-masterclass.html" class="inline-block text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-full px-4 py-1 hover:bg-cyan-400/10 transition">
+                                View Full Details
+                            </a>
+                            <a href="robot_certificate.png" target="_blank" class="inline-block text-sm font-medium text-sky-400 border border-sky-400/50 rounded-full px-4 py-1 hover:bg-sky-400/10 transition">
+                                View Certificate
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
@@ -655,23 +680,33 @@
                                 <i data-lucide="brain-circuit" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Advanced AI RAG Chatbot</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">A multi-modal RAG system with a Vision pipeline, hybrid search, and a non-blocking architecture for querying technical documents.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Agentic AI Financial Analysis</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Autonomous multi-agent system using LangChain for in-depth financial intelligence and analysis for SMEs.</p>
                     </div>
                     <div class="mt-4">
-                        <button class="learn-more-btn w-full text-center py-2 px-4 rounded-lg transition"
-                            data-title="Advanced AI RAG Chatbot"
-                            data-description="This project involved building a sophisticated, local Retrieval-Augmented Generation (RAG) system from the ground up to provide accurate, context-aware answers from a knowledge base of complex technical manuals, including text and diagrams."
-                            data-details='[
-                                {"heading": "Goal", "text": "To create a high-fidelity RAG platform that could overcome the limitations of simple text retrieval by implementing a multi-modal Vision pipeline and advanced search techniques for maximum relevance and accuracy."},
-                                {"heading": "My Role", "text": "I led the full development cycle, including backend architecture, frontend integration, model evaluation, and the implementation of the core RAG pipeline. This involved rigorous testing and iteration to optimize retrieval and generation quality."},
-                                {"heading": "Key Features & Technologies", "text": "<ul><li class=`list-disc ml-4`><b>Dual-Backend Architecture:</b> FastAPI for querying and a non-blocking ingestion service using Celery and Redis.</li><li class=`list-disc ml-4`><b>Vision RAG Pipeline:</b> Used PyPDFium2 and VLMs (like Qwen-VL) to process and understand diagrams and visual content from PDFs.</li><li class=`list-disc ml-4`><b>Hybrid Search:</b> Combined semantic search (Qwen embeddings) with keyword-based BM25 search, fused with Reciprocal Rank Fusion (RRF) for comprehensive retrieval.</li><li class=`list-disc ml-4`><b>Cross-Encoder Re-ranking:</b> Implemented a re-ranking stage (Qwen-reranker) to drastically improve the precision of retrieved context.</li><li class=`list-disc ml-4`><b>Interactive Frontend:</b> Built with React, featuring real-time responses, clickable source citations, and dynamic document filtering.</li></ul>"}
-                            ]'>
-                            Learn More
-                        </button>
+                        <a href="experience/iiot-ai-developer.html#project-financial-ai" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
                     </div>
                 </div>
                 <!-- Project 2 -->
+                <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);">
+                                <i data-lucide="message-square-text" class="text-white w-8 h-8"></i>
+                            </span>
+                        </div>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Advanced AI RAG Chatbot</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Multi-modal Vision RAG system with Anthropic's Contextual Retrieval for industrial diagnostics and technical documentation.</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="experience/iiot-ai-developer.html#project-industrial-chatbot" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
+                    </div>
+                </div>
+                <!-- Project 3 -->
                 <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
                     <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -687,19 +722,12 @@
                         <p class="mt-2 text-sm" style="color: var(--text-tertiary);">An AI-powered system integrating perception, manipulation, and motion planning to fully automate coffee delivery.</p>
                     </div>
                     <div class="mt-4">
-                        <button class="learn-more-btn w-full text-center py-2 px-4 rounded-lg transition"
-                            data-title="Vision-Guided Robotics Coffee Delivery"
-                            data-description="This was my final project for the Robotics Masterclass, aiming to create a fully automated coffee delivery system. The project integrated multiple robotics and AI disciplines to solve a real-world automation challenge."
-                            data-details='[
-                                {"heading": "Goal", "text": "To build an end-to-end system where a robotic arm can visually identify a designated delivery slot, pick up a coffee cup, and place it accurately and securely."},
-                                {"heading": "My Role", "text": "I was responsible for the entire development lifecycle, from system design and component integration to programming the perception, planning, and control modules."},
-                                {"heading": "Key Features & Technologies", "text": "<ul><li class=`list-disc ml-4`><b>YOLOv5:</b> Used for real-time computer vision to detect the hole for cup placement.</li><li class=`list-disc ml-4`><b>MoveIt & ROS:</b> Implemented for Cartesian path planning and motion control, ensuring smooth and precise robotic arm movement.</li><li class=`list-disc ml-4`><b>UR3e Robotic Arm:</b> Programmed the arm to perform the complete pick-and-place task.</li></ul>"}
-                            ]'>
-                            Learn More
-                        </button>
+                        <a href="projects/coffee-delivery-capstone.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
                     </div>
                 </div>
-                <!-- Project 3 -->
+                <!-- Project 4 -->
                 <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
                      <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -711,19 +739,63 @@
                         <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Completed a three-phase automation for the RB-1 robot, from hardcoded paths to full autonomy using SLAM.</p>
                     </div>
                      <div class="mt-4">
-                        <button class="learn-more-btn w-full text-center py-2 px-4 rounded-lg transition"
-                            data-title="Autonomous Warehouse Robot"
-                            data-description="This project involved progressively increasing the autonomy of a warehouse robot (RB-1) to navigate and handle objects in a simulated warehouse environment."
-                            data-details='[
-                                {"heading": "Goal", "text": "To evolve the robot from following a simple, hardcoded path to navigating fully autonomously using a self-generated map."},
-                                {"heading": "My Role", "text": "I developed the navigation and mapping software, implementing and tuning algorithms for each phase of autonomy."},
-                                {"heading": "Key Features & Technologies", "text": "<ul><li class=`list-disc ml-4`><b>Phase 1 (Hardcoded):</b> The robot followed a predefined path to pick, transport, and drop a shelf.</li><li class=`list-disc ml-4`><b>Phase 2 (SLAM):</b> Implemented SLAM (Simultaneous Localization and Mapping) with ROS2 to enable the robot to create a map of its environment and detect obstacles.</li><li class=`list-disc ml-4`><b>Phase 3 (Full Autonomy):</b> The robot used its generated map for autonomous path planning and execution, dynamically avoiding obstacles to deliver shelves.</li></ul>"}
-                            ]'>
-                            Learn More
-                        </button>
+                        <a href="projects/warehouse-robot.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
                     </div>
                 </div>
-                <!-- Project 4 -->
+                <!-- Project 5 -->
+                <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+                                <i data-lucide="grab" class="text-white w-8 h-8"></i>
+                            </span>
+                        </div>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">UR3e Vision-Guided Manipulation</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Vision-guided manipulation for the UR3e robotic arm, from hardcoded movements to advanced 3D perception-based control.</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="projects/ur3e-arm-manipulation.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
+                    </div>
+                </div>
+                <!-- Project 6 -->
+                <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);">
+                                <i data-lucide="navigation" class="text-white w-8 h-8"></i>
+                            </span>
+                        </div>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">ROSbot XL PID Navigation</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Autonomous maze navigation using PID control and vision-based obstacle detection for precise movement.</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="projects/rosbot-xl-navigation.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
+                    </div>
+                </div>
+                <!-- Project 7 -->
+                <div class="glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);">
+                                <i data-lucide="cpu" class="text-white w-8 h-8"></i>
+                            </span>
+                        </div>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">TurtleBot3 Physical Robot Assembly</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Built a physical TurtleBot3 robot from scratch, integrating ROS1/ROS2 dual communication and implementing SLAM for autonomous mapping.</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="projects/turtlebot3-mapping.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
+                            View Full Details
+                        </a>
+                    </div>
+                </div>
+                <!-- Project 8 -->
                 <a href="https://ferro.ferrozone.net/" target="_blank" rel="noopener noreferrer" class="project-card-link glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
                     <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -742,7 +814,7 @@
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">E-commerce</span>
                     </div>
                 </a>
-                <!-- Project 5 -->
+                <!-- Project 8 -->
                 <a href="https://almaahirat.com/" target="_blank" rel="noopener noreferrer" class="project-card-link glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
                     <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -760,7 +832,7 @@
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">UI/UX</span>
                     </div>
                 </a>
-                <!-- Project 6 -->
+                <!-- Project 9 -->
                 <a href="https://iiotsolutions.sa/" target="_blank" rel="noopener noreferrer" class="project-card-link glass-effect rounded-lg p-6 flex flex-col justify-between scroll-animation">
                     <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -862,18 +934,14 @@
         const themeToggle = document.getElementById('theme-toggle');
         const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
 
-        // Force light theme as default (override any saved preference for now)
-        const savedTheme = 'light'; // Changed to always default to light
-        html.setAttribute('data-theme', savedTheme);
-        localStorage.setItem('theme', 'light');
-        
+        // Theme is already set by the script in <head>, just set up the toggle
         function toggleTheme() {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         }
-        
+
         themeToggle.addEventListener('click', toggleTheme);
         mobileThemeToggle.addEventListener('click', toggleTheme);
 

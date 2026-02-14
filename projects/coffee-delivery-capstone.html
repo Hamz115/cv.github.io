@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <script>
+        // Set theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision-Guided Robotic Arm Coffee Placement | Hamza Feroze</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="../assets/js/tailwind.js"></script>
+    <link href="../assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="../assets/js/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #fafbfd;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1f36;
+            --text-secondary: #2d3748;
+            --text-tertiary: #4a5568;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-secondary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 50%, #1e293b 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(37, 45, 61, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-effect:hover {
+            box-shadow: 0 12px 48px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #06b6d4;
+            margin-bottom: 2rem;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        [data-theme="dark"] .tech-tag {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .theme-toggle {
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
+            position: absolute;
+        }
+
+        .theme-toggle:hover .theme-icon {
+            color: white;
+        }
+
+        [data-theme="light"] .theme-icon.sun {
+            opacity: 1;
+            position: relative;
+        }
+
+        [data-theme="light"] .theme-icon.moon {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .theme-icon.sun {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .theme-icon.moon {
+            opacity: 1;
+            position: relative;
+        }
+
+        .nav-link {
+            color: var(--text-tertiary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-secondary);
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
+            border: 2px dashed #06b6d4;
+            border-radius: 0.75rem;
+            padding: 3rem;
+            text-align: center;
+            color: #0369a1;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        [data-theme="dark"] .screenshot-placeholder {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .feature-item {
+            padding: 1rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 100%);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid #3b82f6;
+        }
+
+        [data-theme="dark"] .feature-item {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .link-button {
+            background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+            text-decoration: none;
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            color: white;
+        }
+
+        .impact-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Back to Portfolio
+            </a>
+            <a href="../index.html" class="text-xl font-bold gradient-text">Hamza Feroze</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="award" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">Capstone Project</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Vision-Guided Robotic Arm Coffee Placement</h1>
+                <p class="text-2xl font-semibold mb-6 opacity-90">The Construct Robotics Masterclass</p>
+                <p class="text-xl opacity-90 leading-relaxed max-w-3xl mx-auto mb-8">
+                    An AI-powered system integrating real-time computer vision, motion planning, and robotic manipulation to fully automate coffee delivery.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="https://github.com/Hamz115/Starbot_Delivery" target="_blank" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 px-6 py-3 rounded-lg font-semibold transition-all">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                        <span>View on GitHub</span>
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=kWCi1mnxssY" target="_blank" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 px-6 py-3 rounded-lg font-semibold transition-all">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                        <span>Watch Demo (1:33:33)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-5xl">
+
+        <!-- Overview -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Project Overview</h2>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                This was the final capstone project for The Construct Robotics Masterclass, designed to solve a real-world automation challenge: creating a fully automated coffee delivery system. The project integrated multiple robotics and AI disciplines to build an end-to-end system where a robotic arm can visually identify a designated delivery slot, pick up a coffee cup, and place it accurately and securely without spilling.
+            </p>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                The system demonstrates the practical application of computer vision, motion planning, and robotic manipulation - combining perception, planning, and control to achieve a complex automated task.
+            </p>
+        </section>
+
+        <!-- My Role -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">My Role</h2>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                I was responsible for the entire development lifecycle, from system architecture and design to implementation and deployment. This included:
+            </p>
+            <ul class="mt-4 space-y-3 text-lg" style="color: var(--text-tertiary);">
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Designing the overall system architecture integrating vision, planning, and control</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Training and deploying the YOLOv8 perception model for real-time object detection</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Implementing motion planning using the MoveIt! framework</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Developing custom ROS nodes to orchestrate the entire workflow</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Programming and controlling the UR3e robotic arm for precise execution</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Key Features & Technical Implementation -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Key Features & Technical Implementation</h2>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="eye" class="w-6 h-6 text-blue-600"></i>
+                    Real-Time Perception (YOLOv8)
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    Trained a YOLOv8 computer vision model for real-time detection of the designated delivery slot ("hole") for cup placement. The system accurately identifies the target's 3D coordinates from the camera feed, enabling precise spatial awareness for the robotic arm.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="route" class="w-6 h-6 text-cyan-600"></i>
+                    Precision Motion Planning (MoveIt!)
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    Implemented the MoveIt! framework to handle all motion planning tasks. This enabled the generation of smooth, collision-free Cartesian paths, ensuring the UR3e arm moved precisely and safely from the pick location to the place location without spilling the coffee.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="network" class="w-6 h-6 text-teal-600"></i>
+                    Full ROS Integration
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    The entire system was orchestrated using ROS (Robot Operating System). Custom nodes were developed to subscribe to YOLOv8 perception topics, process the 3D coordinates, send goals to the MoveIt! planner, and execute the planned trajectory on the physical UR3e robotic arm.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="cpu" class="w-6 h-6 text-blue-600"></i>
+                    End-to-End Automation
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    Achieved fully autonomous operation from perception to execution. The system detects the target, plans the motion, picks up the coffee cup, navigates to the delivery slot, and places it accurately - all without human intervention.
+                </p>
+            </div>
+        </section>
+
+        <!-- Technologies Used -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Technologies Used</h2>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="tech-tag">ROS (Robot Operating System)</span>
+                <span class="tech-tag">MoveIt!</span>
+                <span class="tech-tag">C++</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">YOLOv8</span>
+                <span class="tech-tag">Computer Vision</span>
+                <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">UR3e Robotic Arm</span>
+                <span class="tech-tag">Gazebo</span>
+                <span class="tech-tag">RViz</span>
+                <span class="tech-tag">Motion Planning</span>
+                <span class="tech-tag">Object Detection</span>
+            </div>
+        </section>
+
+        <!-- Screenshots -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Project Demo</h2>
+            <div class="mb-6">
+                <img src="../Staarbot.png" alt="Vision-Guided Coffee Delivery Robot System" class="w-full rounded-lg shadow-lg mb-6" style="max-height: 600px; object-fit: contain;">
+                <p class="text-center mb-4 text-lg" style="color: var(--text-tertiary);">UR3e robotic arm with YOLOv8 vision system for autonomous coffee cup placement</p>
+                <div class="text-center">
+                    <a href="https://www.youtube.com/watch?v=kWCi1mnxssY" target="_blank" class="link-button inline-flex">
+                        <i data-lucide="play-circle" class="w-5 h-5"></i>
+                        <span>Watch Full Demo on YouTube (1:33:33)</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact & Learning Outcomes -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Impact & Learning Outcomes</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">100%</div>
+                    <div class="text-sm">Autonomous Operation</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">3</div>
+                    <div class="text-sm">Core Systems Integrated</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">Real-time</div>
+                    <div class="text-sm">Computer Vision Processing</div>
+                </div>
+            </div>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                This capstone project successfully demonstrated the integration of advanced robotics concepts including computer vision, motion planning, and robotic manipulation. The system showcased practical application of AI and robotics in solving real-world automation challenges, validating the skills acquired throughout the Robotics Masterclass.
+            </p>
+        </section>
+
+        <!-- Navigation -->
+        <div class="mt-12">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span>Back to Portfolio</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8" style="color: var(--text-tertiary);">
+        <p class="font-medium">Designed & Built with <span style="color: #14b8a6;">♥</span> by <span class="gradient-text">Hamza Feroze</span></p>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>

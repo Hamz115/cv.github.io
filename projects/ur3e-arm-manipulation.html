@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <script>
+        // Set theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UR3e Arm Robot - Vision-Guided Manipulation | Hamza Feroze</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="../assets/js/tailwind.js"></script>
+    <link href="../assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="../assets/js/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #fafbfd;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1f36;
+            --text-secondary: #2d3748;
+            --text-tertiary: #4a5568;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-secondary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 50%, #1e293b 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(37, 45, 61, 0.8);
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #06b6d4;
+            margin-bottom: 2rem;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 100%);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .phase-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+        }
+
+        .phase-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        .phase-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        [data-theme="dark"] .tech-tag {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
+            border: 2px dashed #06b6d4;
+            border-radius: 0.75rem;
+            padding: 3rem;
+            text-align: center;
+            color: #0369a1;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        [data-theme="dark"] .screenshot-placeholder {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .impact-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .theme-toggle {
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
+            position: absolute;
+        }
+
+        .theme-toggle:hover .theme-icon {
+            color: white;
+        }
+
+        [data-theme="light"] .theme-icon.sun {
+            opacity: 1;
+            position: relative;
+        }
+
+        [data-theme="light"] .theme-icon.moon {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .theme-icon.sun {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .theme-icon.moon {
+            opacity: 1;
+            position: relative;
+        }
+
+        .nav-link {
+            color: var(--text-tertiary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-secondary);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Back to Portfolio
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+                <a href="../index.html" class="text-xl font-bold gradient-text">Hamza Feroze</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="grab" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">Checkpoint Project</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">UR3e Vision-Guided Manipulation</h1>
+                <p class="text-2xl font-semibold mb-6 opacity-90">The Construct Robotics Masterclass</p>
+                <p class="text-xl opacity-90 leading-relaxed max-w-3xl mx-auto">
+                    Vision-guided manipulation capabilities for the UR3e robotic arm, progressing from hardcoded movements to advanced 3D perception-based control.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-5xl">
+
+        <!-- Overview -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Project Overview</h2>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                This checkpoint project focused on developing vision-guided manipulation capabilities for the UR3e robotic arm. The project evolved through two distinct phases, progressing from hardcoded joint movements to advanced 3D perception-based manipulation, demonstrating the power of computer vision in robotic control.
+            </p>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                The system showcases the integration of point cloud processing, 3D object detection, and real-time motion planning to enable the robot to dynamically identify and manipulate objects in its environment.
+            </p>
+        </section>
+
+        <!-- My Role -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">My Role</h2>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                I developed the manipulation and perception systems for both phases of the project, implementing algorithms for object detection and motion planning:
+            </p>
+            <ul class="mt-4 space-y-3 text-lg" style="color: var(--text-tertiary);">
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Programming hardcoded joint trajectories for pick-and-place operations</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Implementing point cloud processing for 3D object detection</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Integrating MoveIt! for real-time motion planning</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Developing perception pipelines using Point Cloud Library (PCL)</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Testing and refining manipulation strategies for reliability</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Two-Phase Development -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Two-Phase Development Process</h2>
+
+            <!-- Phase 1 -->
+            <div class="phase-card">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="phase-number">1</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">Phase 1: Hardcoded Joint Movements</h3>
+                        <p class="font-semibold mb-3" style="color: var(--text-tertiary);">Foundation - Predefined Manipulation Sequences</p>
+                    </div>
+                </div>
+                <div class="ml-16">
+                    <p class="leading-relaxed mb-3" style="color: var(--text-tertiary);">
+                        In the initial phase, the UR3e robotic arm executed manipulation tasks using predefined joint angles and movements. The arm was programmed with specific trajectories to:
+                    </p>
+                    <ul class="space-y-2" style="color: var(--text-tertiary);">
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Move to a known pickup location using hardcoded joint positions</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Close the gripper to grasp a block at the predefined location</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Execute a rotation sequence to reorient the object</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Move to the drop-off location and release the object</span>
+                        </li>
+                    </ul>
+                    <p class="italic mt-3" style="color: var(--text-tertiary);">
+                        This phase established fundamental manipulation skills and validated the arm's mechanical capabilities for pick-and-place operations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-card">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="phase-number">2</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">Phase 2: Point Cloud-Based Perception</h3>
+                        <p class="font-semibold mb-3" style="color: var(--text-tertiary);">Advanced - Dynamic Object Detection & Adaptive Manipulation</p>
+                    </div>
+                </div>
+                <div class="ml-16">
+                    <p class="leading-relaxed mb-3" style="color: var(--text-tertiary);">
+                        The second phase introduced sophisticated 3D perception, enabling the robot to detect and manipulate objects dynamically based on their actual positions:
+                    </p>
+                    <ul class="space-y-2" style="color: var(--text-tertiary);">
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Real-time point cloud acquisition from depth cameras for 3D scene understanding</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Object detection and pose estimation using Point Cloud Library (PCL) algorithms</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Dynamic motion planning with MoveIt! based on detected object locations</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Adaptive pick-and-place operations that respond to object position variations</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-cyan-600 font-bold">•</span>
+                            <span>Collision-free trajectory generation for safe manipulation in dynamic environments</span>
+                        </li>
+                    </ul>
+                    <p class="italic mt-3" style="color: var(--text-tertiary);">
+                        This phase demonstrated true robotic intelligence, with the system adapting to object positions in real-time rather than relying on fixed coordinates.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Used -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Technologies Used</h2>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="tech-tag">ROS (Robot Operating System)</span>
+                <span class="tech-tag">MoveIt!</span>
+                <span class="tech-tag">Point Cloud Library (PCL)</span>
+                <span class="tech-tag">3D Perception</span>
+                <span class="tech-tag">Computer Vision (OpenCV)</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">C++</span>
+                <span class="tech-tag">UR3e Robotic Arm</span>
+                <span class="tech-tag">Depth Cameras</span>
+                <span class="tech-tag">Motion Planning</span>
+                <span class="tech-tag">Gazebo Simulation</span>
+                <span class="tech-tag">RViz</span>
+            </div>
+        </section>
+
+        <!-- Screenshots -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">Simulation Environment</h2>
+            <div class="screenshot-placeholder">
+                <i data-lucide="image" class="w-16 h-16 mx-auto mb-4 text-cyan-600"></i>
+                <p class="text-lg">UR3e Vision-Guided Manipulation Demonstration</p>
+                <p class="text-sm mt-2">Point cloud processing and adaptive pick-and-place operations</p>
+            </div>
+        </section>
+
+        <!-- Impact & Learning Outcomes -->
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">Impact & Learning Outcomes</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">2</div>
+                    <div class="text-sm">Development Phases</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">3D</div>
+                    <div class="text-sm">Perception Integration</div>
+                </div>
+                <div class="impact-badge">
+                    <div class="text-4xl font-bold mb-2">Dynamic</div>
+                    <div class="text-sm">Object Manipulation</div>
+                </div>
+            </div>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                This project provided comprehensive experience in vision-guided robotic manipulation. Key learning outcomes included:
+            </p>
+            <ul class="space-y-2" style="color: var(--text-tertiary);">
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Understanding the progression from hardcoded to perception-based control</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Mastering 3D point cloud processing and object detection techniques</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Implementing real-time motion planning with MoveIt! framework</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i>
+                    <span>Integrating multiple ROS components for complex manipulation tasks</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Navigation -->
+        <div class="mt-12">
+            <a href="../index.html#projects" class="back-button">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span>Back to Portfolio</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8" style="color: var(--text-tertiary);">
+        <p class="font-medium">Designed & Built with <span style="color: #14b8a6;">♥</span> by <span class="gradient-text">Hamza Feroze</span></p>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
