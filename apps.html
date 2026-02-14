@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apps | Hamza Feroze</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="assets/js/tailwind.js"></script>
+    <link href="assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="assets/js/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252d3d;
+            --bg-card: rgba(37, 45, 61, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #cbd5e1;
+            --text-quaternary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(37, 45, 61, 0.8);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafbfd;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #1a1f36;
+            --text-secondary: #2d3748;
+            --text-tertiary: #4a5568;
+            --text-quaternary: #718096;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            color: var(--text-secondary);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 50%, #1e293b 100%);
+        }
+
+        .glass-effect {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-effect:hover {
+            box-shadow: 0 12px 48px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation active states */
+        .nav-link { position: relative; }
+        .nav-link.active { color: #14b8a6 !important; font-weight: 700; }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+            height: 2px; background: linear-gradient(90deg, #3b82f6, #06b6d4, #14b8a6); border-radius: 2px;
+        }
+        .nav-link-contact {
+            background: transparent; color: var(--text-secondary) !important;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        .nav-link-contact:hover { background: rgba(6, 182, 212, 0.1); border-color: #06b6d4; }
+
+        #mobile-menu .nav-link.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: #ffffff !important;
+        }
+        #mobile-menu .nav-link.active::after { display: none; }
+
+        .text-white { color: var(--text-primary) !important; }
+        .text-slate-300 { color: var(--text-secondary) !important; }
+        [data-theme="light"] .text-slate-300 { color: var(--text-secondary) !important; }
+        [data-theme="light"] .text-sky-400, [data-theme="light"] .hover\:text-sky-400:hover { color: var(--accent-primary) !important; }
+
+        /* Theme toggle */
+        .theme-toggle {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 1px solid var(--border-color);
+            background: transparent; transition: all 0.3s; position: relative;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.1); }
+        [data-theme="light"] .theme-toggle:hover { background: rgba(0,0,0,0.05); }
+        .theme-icon { width: 18px; height: 18px; transition: all 0.3s; }
+        [data-theme="light"] .theme-icon.moon { opacity: 0; position: absolute; }
+        [data-theme="light"] .theme-icon.sun { opacity: 1; position: relative; color: var(--text-primary) !important; }
+        [data-theme="dark"] .theme-icon.sun { opacity: 0; position: absolute; }
+        [data-theme="dark"] .theme-icon.moon { opacity: 1; position: relative; color: var(--text-primary) !important; }
+
+        /* Page Content */
+        main {
+            max-width: 900px; margin: 0 auto;
+            padding: 120px 24px 60px;
+        }
+
+        .page-title {
+            font-size: 2.4rem; font-weight: 800;
+            color: var(--text-primary); margin-bottom: 8px;
+        }
+        .page-title span {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            font-size: 1.1rem; color: var(--text-quaternary);
+            margin-bottom: 40px;
+        }
+
+        /* App Card */
+        .app-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .app-card:hover {
+            box-shadow: 0 12px 48px rgba(59, 130, 246, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 50%, #1e3a5f 100%);
+            padding: 32px; display: flex; align-items: center; gap: 20px;
+        }
+
+        .app-icon {
+            width: 72px; height: 72px; border-radius: 18px;
+            background: linear-gradient(135deg, #2196F3, #4AC3E0);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(33, 150, 243, 0.3);
+        }
+
+        .app-header-text h2 {
+            font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+        }
+        .app-header-text p {
+            color: rgba(255,255,255,0.75); font-size: 0.95rem;
+        }
+
+        .app-platforms {
+            display: flex; gap: 8px; margin-top: 8px;
+        }
+        .platform-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;
+            font-weight: 600; background: rgba(255,255,255,0.15); color: #e2e8f0;
+        }
+
+        .app-body {
+            padding: 32px;
+        }
+
+        .app-description {
+            font-size: 1rem; line-height: 1.8;
+            color: var(--text-tertiary); margin-bottom: 24px;
+        }
+
+        .app-features {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            margin-bottom: 28px;
+        }
+        .app-feature {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 0.9rem; color: var(--text-tertiary);
+        }
+        .app-feature-icon {
+            flex-shrink: 0; margin-top: 2px; font-size: 1rem;
+        }
+
+        .app-actions {
+            display: flex; gap: 12px; flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: #fff; font-weight: 600; font-size: 0.95rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; border-radius: 12px;
+            background: transparent; color: var(--text-tertiary);
+            font-weight: 600; font-size: 0.95rem;
+            text-decoration: none;
+            border: 1.5px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Coming soon */
+        .coming-soon {
+            margin-top: 32px; padding: 24px;
+            border: 1.5px dashed var(--border-color);
+            border-radius: 16px; text-align: center;
+        }
+        .coming-soon p {
+            color: var(--text-quaternary); font-size: 0.95rem;
+        }
+        .coming-soon span {
+            font-weight: 600; color: var(--text-tertiary);
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--text-quaternary); text-decoration: none;
+            font-size: 0.9rem; margin-bottom: 24px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--accent-primary); }
+
+        @media (max-width: 640px) {
+            .page-title { font-size: 1.8rem; }
+            .app-header { flex-direction: column; text-align: center; padding: 24px; }
+            .app-features { grid-template-columns: 1fr; }
+            .app-actions { flex-direction: column; }
+            .app-actions a { text-align: center; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-white">Hamza Feroze</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html#about" class="nav-link text-slate-300 hover:text-sky-400 transition">About</a>
+                <a href="index.html#experience" class="nav-link text-slate-300 hover:text-sky-400 transition">Experience</a>
+                <a href="index.html#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
+                <a href="index.html#projects" class="nav-link text-slate-300 hover:text-sky-400 transition">Projects</a>
+                <a href="index.html#skills" class="nav-link text-slate-300 hover:text-sky-400 transition">Skills</a>
+                <a href="apps.html" class="nav-link active text-slate-300 hover:text-sky-400 transition">Apps</a>
+                <a href="index.html#contact" class="nav-link nav-link-contact font-medium py-2 px-4 rounded-lg transition">Contact</a>
+                <div class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+            </div>
+            <div class="md:hidden flex items-center space-x-4">
+                <button id="mobile-menu-button" class="text-white">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="theme-toggle" id="mobile-theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden glass-effect">
+            <a href="index.html#about" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">About</a>
+            <a href="index.html#experience" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Experience</a>
+            <a href="index.html#education" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Education</a>
+            <a href="index.html#projects" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Projects</a>
+            <a href="index.html#skills" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Skills</a>
+            <a href="apps.html" class="nav-link active block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Apps</a>
+            <a href="index.html#contact" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Contact</a>
+        </div>
+    </header>
+
+<main>
+    <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+
+    <h1 class="page-title">My <span>Apps</span></h1>
+    <p class="page-subtitle">Applications I've built and published.</p>
+
+    <!-- TurboDictate -->
+    <div class="app-card">
+        <div class="app-header">
+            <div class="app-icon">&#127908;</div>
+            <div class="app-header-text">
+                <h2>TurboDictate</h2>
+                <p>Voice to Text Made Easy</p>
+                <div class="app-platforms">
+                    <span class="platform-badge">&#128187; Windows</span>
+                    <span class="platform-badge">&#128241; Android</span>
+                </div>
+            </div>
+        </div>
+        <div class="app-body">
+            <p class="app-description">
+                TurboDictate is a fast, private voice-to-text application powered by Groq's Whisper AI. It transforms your speech into text in seconds, working anywhere on your device. On Windows, use global hotkeys to dictate directly into any application. On Android, use the custom voice keyboard to type by speaking in any text field. Supports both English and Arabic transcription.
+            </p>
+
+            <div class="app-features">
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#9889;</span>
+                    <span>Near-instant AI transcription powered by Groq's Whisper</span>
+                </div>
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#128274;</span>
+                    <span>Privacy first — audio is processed and immediately deleted</span>
+                </div>
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#9000;</span>
+                    <span>Global hotkeys on Windows (Alt+R for English, Alt+A for Arabic)</span>
+                </div>
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#9000;</span>
+                    <span>Custom voice keyboard on Android for any text field</span>
+                </div>
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#127760;</span>
+                    <span>Multi-language support (English & Arabic)</span>
+                </div>
+                <div class="app-feature">
+                    <span class="app-feature-icon">&#128203;</span>
+                    <span>Local transcription history with easy copy</span>
+                </div>
+            </div>
+
+            <div class="app-actions">
+                <a href="/apps/turbo-dictate/index.html" class="btn-primary">
+                    Learn More & Download &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coming Soon -->
+    <div class="coming-soon">
+        <p><span>More apps coming soon.</span><br>Stay tuned for new releases.</p>
+    </div>
+</main>
+
+<script>
+    lucide.createIcons();
+
+    // Theme toggle
+    function setupThemeToggle(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                lucide.createIcons();
+            });
+        }
+    }
+    setupThemeToggle('theme-toggle');
+    setupThemeToggle('mobile-theme-toggle');
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+    }
+
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('glass-effect');
+        } else {
+            header.classList.remove('glass-effect');
+        }
+    });
+</script>
+
+</body>
+</html>
