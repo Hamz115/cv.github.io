@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <script>
         // Set theme immediately to prevent flash
@@ -10,7 +10,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Feroze - Robotics Developer</title>
+    <title>حمزة فيروز - مطور روبوتات</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
     <script src="assets/js/tailwind.js"></script>
     <link href="assets/fonts/inter/inter.css" rel="stylesheet">
@@ -58,7 +58,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
             background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
             background-attachment: fixed;
             color: var(--text-secondary);
@@ -250,10 +250,34 @@
 
         /* Project button styling */
         .learn-more-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            width: auto;
+            min-height: 38px;
+            padding: 0.55rem 0.9rem;
+            border-radius: 0.75rem;
             background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%) !important;
             color: #ffffff !important;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.9rem;
+            line-height: 1.2;
+            text-decoration: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+        .learn-more-btn i {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+        }
+        html[dir="rtl"] .learn-more-btn {
+            flex-direction: row-reverse;
+        }
+        .project-cta {
+            width: 100%;
         }
         .learn-more-btn:hover {
             background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%) !important;
@@ -419,30 +443,73 @@
         [data-theme="light"] .text-slate-400, [data-theme="light"] .hover\:text-slate-400:hover { color: var(--text-tertiary) !important; }
         [data-theme="light"] .text-sky-400 { color: var(--accent-primary) !important; }
         [data-theme="light"] .hover\:text-sky-400:hover { color: var(--accent-primary) !important; }
+
+
+        html[dir="rtl"] body {
+            direction: rtl;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .space-x-8 > :not([hidden]) ~ :not([hidden]),
+        html[dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+
+        html[dir="rtl"] .profile-image {
+            direction: ltr;
+        }
+
+        html[dir="rtl"] .learn-more-btn i,
+        html[dir="rtl"] [data-lucide="arrow-right"] {
+            transform: scaleX(-1);
+        }
+
+        html[dir="rtl"] .text-center {
+            text-align: center;
+        }
+
+        html[dir="rtl"] .rtl-navbar {
+            flex-direction: row !important;
+            justify-content: space-between;
+        }
+
+        html[dir="rtl"] .rtl-navbar-brand {
+            order: unset;
+        }
+
+        html[dir="rtl"] .rtl-navbar-menu {
+            flex-direction: row;
+            margin: 0;
+        }
+
+        html[dir="rtl"] .rtl-mobile-controls {
+            flex-direction: row-reverse;
+        }
+
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Header & Navigation -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-white">Hamza Feroze</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">About</a>
-                <a href="#experience" class="nav-link text-slate-300 hover:text-sky-400 transition">Experience</a>
-                <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
-                <a href="#projects" class="nav-link text-slate-300 hover:text-sky-400 transition">Projects</a>
-                <a href="#skills" class="nav-link text-slate-300 hover:text-sky-400 transition">Skills</a>
-                <a href="apps.html" class="nav-link text-slate-300 hover:text-sky-400 transition">Apps</a>
-                <a href="#contact" class="nav-link nav-link-contact font-medium py-2 px-4 rounded-lg transition">Contact</a>
-                <a href="index_arabic.html" class="nav-link text-slate-300 hover:text-sky-400 transition">العربية</a>
+        <nav class="rtl-navbar container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="rtl-navbar-brand text-2xl font-bold text-white">حمزة فيروز</a>
+            <div class="rtl-navbar-menu hidden md:flex items-center gap-8">
+                <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">نبذة</a>
+                <a href="#experience" class="nav-link text-slate-300 hover:text-sky-400 transition">الخبرات</a>
+                <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">التعليم</a>
+                <a href="#projects" class="nav-link text-slate-300 hover:text-sky-400 transition">المشاريع</a>
+                <a href="#skills" class="nav-link text-slate-300 hover:text-sky-400 transition">المهارات</a>
+                <a href="apps_arabic.html" class="nav-link text-slate-300 hover:text-sky-400 transition">التطبيقات</a>
+                <a href="#contact" class="nav-link nav-link-contact font-medium py-2 px-4 rounded-lg transition">تواصل</a>
+                <a href="index.html" class="nav-link text-slate-300 hover:text-sky-400 transition">English</a>
                 <!-- Theme Toggle -->
                 <div class="theme-toggle" id="theme-toggle">
                     <i data-lucide="sun" class="theme-icon sun"></i>
                     <i data-lucide="moon" class="theme-icon moon"></i>
                 </div>
             </div>
-            <div class="md:hidden flex items-center space-x-4">
+            <div class="rtl-mobile-controls md:hidden flex items-center space-x-4">
                 <button id="mobile-menu-button" class="text-white">
                     <i data-lucide="menu"></i>
                 </button>
@@ -455,14 +522,14 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden glass-effect">
-            <a href="#about" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">About</a>
-            <a href="#experience" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Experience</a>
-            <a href="#education" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Education</a>
-            <a href="#projects" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Projects</a>
-            <a href="#skills" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Skills</a>
-            <a href="apps.html" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Apps</a>
-            <a href="#contact" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">Contact</a>
-            <a href="index_arabic.html" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">العربية</a>
+            <a href="#about" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">نبذة</a>
+            <a href="#experience" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">الخبرات</a>
+            <a href="#education" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">التعليم</a>
+            <a href="#projects" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">المشاريع</a>
+            <a href="#skills" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">المهارات</a>
+            <a href="apps_arabic.html" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">التطبيقات</a>
+            <a href="#contact" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">تواصل</a>
+            <a href="index.html" class="nav-link block py-2 px-6 text-slate-300 hover:bg-sky-500 hover:text-white transition">English</a>
         </div>
     </header>
 
@@ -478,11 +545,11 @@
             <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center max-w-7xl mx-auto">
                 <!-- Text Content -->
                 <div class="order-2 md:order-1">
-                    <p class="text-xl font-semibold mb-4" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Assalamu Alaikum, I'm</p>
-                    <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6" style="color: var(--text-primary); line-height: 1.05;">Hamza Feroze</h1>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8" style="color: var(--text-tertiary); line-height: 1.3;">I build things for <span class="gradient-text">robots</span> and the <span class="gradient-text">web</span>.</h2>
+                    <p class="text-xl font-semibold mb-4" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">السلام عليكم، أنا</p>
+                    <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6" style="color: var(--text-primary); line-height: 1.05;">حمزة فيروز</h1>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8" style="color: var(--text-tertiary); line-height: 1.3;">أبني حلولًا مبتكرة لعالم <span class="gradient-text">الروبوتات</span> و<span class="gradient-text">الويب</span>.</h2>
                     <p class="text-xl leading-relaxed mb-10" style="color: var(--text-tertiary); max-width: 650px;">
-                        A highly skilled <strong style="color: var(--text-primary);">Robotics and AI Developer</strong> with expertise in Python, C++, Web Development, and Full-Stack Engineering. Passionate about optimizing robotics and AI projects, developing AI-powered chatbots, and enhancing automation through intelligent systems.
+                        أنا <strong style="color: var(--text-primary);">مطور روبوتات وذكاء اصطناعي</strong> أمتلك خبرة قوية في Python و C++ وتطوير الويب والهندسة البرمجية المتكاملة. شغفي هو تحسين مشاريع الروبوتات والذكاء الاصطناعي، وبناء مساعدين ذكيين، ورفع مستوى الأتمتة من خلال أنظمة ذكية عملية.
                     </p>
                     <div class="flex items-center gap-5">
                         <a href="https://github.com/Hamz115" target="_blank" class="p-4 rounded-full transition-all duration-300" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); color: white; box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);" onmouseover="this.style.transform='translateY(-4px) scale(1.1)'; this.style.boxShadow='0 10px 30px rgba(59, 130, 246, 0.55)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.35)';">
@@ -497,7 +564,7 @@
                 <!-- Profile Image -->
                 <div class="order-1 md:order-2 flex justify-center md:justify-end">
                     <div class="relative">
-                        <img src="Hamza.jpg" alt="Hamza Feroze" class="profile-image">
+                        <img src="Hamza.jpg" alt="حمزة فيروز" class="profile-image">
                         <!-- Decorative elements -->
                         <div class="absolute -z-10 top-12 left-12 w-full h-full rounded-full" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); opacity: 0.25; filter: blur(60px);"></div>
                         <div class="absolute -z-10 -bottom-8 -right-8 w-3/4 h-3/4 rounded-full" style="background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%); opacity: 0.2; filter: blur(50px);"></div>
@@ -515,59 +582,59 @@
                 <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
                     <i data-lucide="briefcase" class="text-white w-7 h-7"></i>
                 </span>
-                <span style="color: var(--text-primary);">Professional <span class="gradient-text">Experience</span></span>
+                <span style="color: var(--text-primary);">الخبرة <span class="gradient-text">المهنية</span></span>
             </h3>
             <div class="space-y-12">
                 <!-- Job 1 -->
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
-                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">Oct 2024 - Present</p></div>
+                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">أكتوبر 2024 - حتى الآن</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">AI Developer · IIoT Solutions</h4>
-                        <p class="mt-3 text-slate-400">Developed a full-stack AI chatbot with a Vision RAG system, integrating advanced NLP and computer vision. This involved extensive experimentation with various local LLMs (Qwen, Llama3, DeepSeek) and retrieval strategies, leading to the implementation of a cross-encoder re-ranking pipeline to significantly improve context relevance.</p>
+                        <h4 class="text-xl font-bold text-white">مطور ذكاء اصطناعي · IIoT Solutions</h4>
+                        <p class="mt-3 text-slate-400">طورت مساعدًا ذكيًا متكاملًا بنظام Vision RAG يجمع بين معالجة اللغة الطبيعية المتقدمة والرؤية الحاسوبية. شمل ذلك تجارب واسعة على نماذج محلية متعددة مثل Qwen وLlama3 وDeepSeek مع استراتيجيات استرجاع مختلفة، مما أدى إلى تنفيذ خط إعادة ترتيب باستخدام Cross-Encoder لتحسين دقة السياق بشكل كبير.</p>
                         <ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside">
-                            <li>Built a high-performance FastAPI backend for efficient API communication.</li>
-                            <li>Developed an interactive React frontend for a seamless user experience.</li>
-                            <li>Implemented a hybrid search system with cross-encoder re-ranking for superior accuracy.</li>
-                            <li>Engineered a non-blocking ingestion pipeline using Celery and Redis for scalability.</li>
+                            <li>بنيت واجهة خلفية عالية الأداء باستخدام FastAPI لضمان تواصل API بكفاءة.</li>
+                            <li>طورت واجهة React تفاعلية لتقديم تجربة استخدام سلسة.</li>
+                            <li>نفذت نظام بحث هجينًا مع إعادة ترتيب Cross-Encoder لتحقيق دقة أعلى.</li>
+                            <li>صممت خط إدخال غير حاجب باستخدام Celery وRedis لضمان القابلية للتوسع.</li>
                         </ul>
-                        <a href="experience/iiot-ai-developer.html" class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(6, 182, 212, 0.5)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)';">
-                            <span>View Full Details</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <a href="experience/iiot-ai-developer_arabic.html" class="learn-more-btn mt-4">
+                            <span>عرض التفاصيل</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
                         </a>
                     </div>
                 </div>
                 <!-- Job 2 -->
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1" style="color: var(--text-quaternary);">
-                        <p class="font-semibold">Apr 2025 - Dec 2025</p>
+                        <p class="font-semibold">أبريل 2025 - ديسمبر 2025</p>
                     </div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Robotics Developer · Aivot Robotics</h4>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">مطور روبوتات · Aivot Robotics</h4>
                         <p class="mt-3" style="color: var(--text-tertiary);">
-                            Role focused on the intersection of advanced robotics and artificial intelligence. Key responsibilities include developing and implementing novel solutions for robotic perception and manipulation.
+                            يركز هذا الدور على تقاطع الروبوتات المتقدمة مع الذكاء الاصطناعي. وتشمل المسؤوليات الأساسية تطوير وتنفيذ حلول مبتكرة للإدراك الروبوتي والتحكم والمناولة.
                         </p>
                         <ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside">
-                            <li>Develop 'GraspNet', a solution for grasping unknown objects using Mask and Depth images.</li>
-                            <li>Work extensively with ROS2 for robotic software development.</li>
-                            <li>Apply AI techniques for real-time object detection and segmentation.</li>
+                            <li>تطوير GraspNet، وهو حل لالتقاط الأجسام غير المعروفة باستخدام صور القناع والعمق.</li>
+                            <li>العمل بشكل مكثف مع ROS2 لتطوير برمجيات الروبوتات.</li>
+                            <li>تطبيق تقنيات الذكاء الاصطناعي لاكتشاف الأجسام وتقسيمها في الزمن الحقيقي.</li>
                         </ul>
                     </div>
                 </div>
                 <!-- Job 3 -->
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400">
-                        <p class="font-semibold">Jun 2021 - Present</p>
+                        <p class="font-semibold">يونيو 2021 - حتى الآن</p>
                     </div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Web Developer · Al Wahah Web Services</h4>
+                        <h4 class="text-xl font-bold text-white">مطور ويب · Al Wahah Web Services</h4>
                         <p class="mt-3 text-slate-400">
-                            Developed and designed multiple frontend websites and branding materials. Focused on UI/UX, responsive design, and product branding, delivering high-quality digital solutions.
+                            طورت وصممت عدة مواقع واجهات أمامية ومواد هوية بصرية. وتركز العمل على واجهات وتجربة المستخدم والتصميم المتجاوب وبناء العلامة التجارية لتقديم حلول رقمية عالية الجودة.
                         </p>
                         <ul class="mt-4 space-y-2 text-slate-300 list-disc list-inside">
-                            <li>Developed FerroZone, a modern e-commerce site for a glasses brand.</li>
-                            <li>Built AlMaahirat, an educational platform for courses and programs.</li>
-                            <li>Designed flask packaging using Adobe Illustrator for brand identity.</li>
-                            <li>Created the IIoT Solutions website, optimizing for performance and aesthetics.</li>
+                            <li>طورت FerroZone، وهو متجر إلكتروني حديث لعلامة نظارات.</li>
+                            <li>بنيت AlMaahirat، وهي منصة تعليمية للدورات والبرامج.</li>
+                            <li>صممت عبوات القوارير باستخدام Adobe Illustrator لدعم هوية العلامة التجارية.</li>
+                            <li>أنشأت موقع IIoT Solutions مع تحسين الأداء والجماليات البصرية.</li>
                         </ul>
                     </div>
                 </div>
@@ -580,54 +647,54 @@
                 <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);">
                     <i data-lucide="graduation-cap" class="text-white w-7 h-7"></i>
                 </span>
-                <span style="color: var(--text-primary);">Education & <span class="gradient-text">Achievements</span></span>
+                <span style="color: var(--text-primary);">التعليم و<span class="gradient-text">الإنجازات</span></span>
             </h3>
             <div class="space-y-12">
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
-                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">Hifz Graduate</p></div>
+                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">حافظ للقرآن</p></div>
                     <div class="md:col-span-3">
                         <h4 class="text-xl font-bold text-white flex items-center gap-2">
                             <i data-lucide="book-open-check" class="w-6 h-6 text-sky-400"></i>
-                            Memorization of the Holy Qur'an
+                            حفظ القرآن الكريم
                         </h4>
-                        <p class="mt-1 text-slate-300">Successfully completed the memorization of all 30 Juz' and passed the final examination.</p>
+                        <p class="mt-1 text-slate-300">أتممت بحمد الله حفظ الأجزاء الثلاثين كاملة واجتزت الاختبار النهائي بنجاح.</p>
                         <a href="Quran_certificate.png" target="_blank" class="inline-block mt-3 text-sm font-medium text-sky-400 border border-sky-400/50 rounded-full px-4 py-1 hover:bg-sky-400/10 transition">
-                            View Certificate
+                            عرض الشهادة
                         </a>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2025 - 2027</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Master of Science in Artificial Intelligence</h4>
+                        <h4 class="text-xl font-bold text-white">ماجستير العلوم في الذكاء الاصطناعي</h4>
                         <p class="mt-1 text-slate-300">Woolf / Udacity Institute of AI & Technology</p>
-                        <p class="mt-2 text-sm text-slate-400">Covers machine learning, deep learning, NLP, computer vision, and AI system design.</p>
+                        <p class="mt-2 text-sm text-slate-400">يشمل تعلم الآلة والتعلم العميق ومعالجة اللغة الطبيعية والرؤية الحاسوبية وتصميم أنظمة الذكاء الاصطناعي.</p>
                         <span class="inline-block mt-3 text-sm font-medium text-quaternary border border-slate-400/30 rounded-full px-4 py-1">
-                            Ongoing
+                            مستمر
                         </span>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024 - 2027</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Bachelor's Degree in Computer Science</h4>
+                        <h4 class="text-xl font-bold text-white">بكالوريوس علوم الحاسب</h4>
                         <p class="mt-1 text-slate-300">Aptech / University of Bolton</p>
                         <span class="inline-block mt-3 text-sm font-medium text-quaternary border border-slate-400/30 rounded-full px-4 py-1">
-                            Ongoing
+                            مستمر
                         </span>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Robotics Masterclass</h4>
-                        <p class="mt-1 text-slate-300">The Construct / Barcelona, Spain</p>
+                        <h4 class="text-xl font-bold text-white">الماستر كلاس في الروبوتات</h4>
+                        <p class="mt-1 text-slate-300">The Construct / برشلونة، إسبانيا</p>
                         <div class="flex gap-3 mt-3 flex-wrap">
-                            <a href="education/robotics-masterclass.html" class="inline-block text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-full px-4 py-1 hover:bg-cyan-400/10 transition">
-                                View Full Details
+                            <a href="education/robotics-masterclass_arabic.html" class="inline-block text-sm font-medium text-cyan-400 border border-cyan-400/50 rounded-full px-4 py-1 hover:bg-cyan-400/10 transition">
+                                عرض التفاصيل الكاملة
                             </a>
                             <a href="robot_certificate.png" target="_blank" class="inline-block text-sm font-medium text-sky-400 border border-sky-400/50 rounded-full px-4 py-1 hover:bg-sky-400/10 transition">
-                                View Certificate
+                                عرض الشهادة
                             </a>
                         </div>
                     </div>
@@ -635,49 +702,49 @@
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2021 - 2023</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Cambridge A-Levels</h4>
+                        <h4 class="text-xl font-bold text-white">كامبردج A-Levels</h4>
                         <p class="mt-1 text-slate-300">Sri Lankan International School Jeddah</p>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
                     <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2018 - 2020</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Cambridge IGCSE O-Levels</h4>
+                        <h4 class="text-xl font-bold text-white">كامبردج IGCSE O-Levels</h4>
                         <p class="mt-1 text-slate-300">Sri Lankan International School Jeddah</p>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
-                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024 - Ongoing</p></div>
+                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">2024 - مستمر</p></div>
                     <div class="md:col-span-3">
-                        <h4 class="text-xl font-bold text-white">Solutions Architect Associate</h4>
-                        <p class="mt-1 text-slate-300">AWS Cloud</p>
+                        <h4 class="text-xl font-bold text-white">مهندس حلول سحابي - Associate</h4>
+                        <p class="mt-1 text-slate-300">سحابة AWS</p>
                          <span class="inline-block mt-3 text-sm font-medium text-quaternary border border-slate-400/30 rounded-full px-4 py-1">
-                            In Progress
+                            قيد الإنجاز
                         </span>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-4 gap-6 scroll-animation">
-                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">Courses</p></div>
+                    <div class="md:col-span-1 text-slate-400"><p class="font-semibold">الدورات</p></div>
                     <div class="md:col-span-3">
                         <ul class="space-y-3">
                             <li>
-                                <h4 class="font-bold text-white">Artificial Intelligence Nanodegree</h4>
+                                <h4 class="font-bold text-white">نانو درجة الذكاء الاصطناعي</h4>
                                 <p class="text-sm text-slate-300">Udacity (2026)</p>
                             </li>
                             <li>
-                                <h4 class="font-bold text-white">Agentic AI Nanodegree</h4>
+                                <h4 class="font-bold text-white">نانو درجة الوكلاء الذكيين</h4>
                                 <p class="text-sm text-slate-300">Udacity (2026)</p>
                             </li>
                             <li>
-                                <h4 class="font-bold text-white">Complete Generative AI</h4>
+                                <h4 class="font-bold text-white">الذكاء الاصطناعي التوليدي الشامل</h4>
                                 <p class="text-sm text-slate-300">By Krish Naik / Udemy (2024)</p>
                             </li>
                             <li>
-                                <h4 class="font-bold text-white">Solutions Architect Associate Course</h4>
+                                <h4 class="font-bold text-white">مهندس حلول سحابي - Associate Course</h4>
                                 <p class="text-sm text-slate-300">By Adrian Cantril (2024)</p>
                             </li>
                             <li>
-                                <h4 class="font-bold text-white">Web Developer BootCamp</h4>
+                                <h4 class="font-bold text-white">معسكر مطور الويب</h4>
                                 <p class="text-sm text-slate-300">By Colt Steele / Udemy (2021)</p>
                             </li>
                         </ul>
@@ -692,7 +759,7 @@
                 <span class="p-3 rounded-xl" style="background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);">
                     <i data-lucide="lightbulb" class="text-white w-7 h-7"></i>
                 </span>
-                <span style="color: var(--text-primary);">Featured <span class="gradient-text">Projects</span></span>
+                <span style="color: var(--text-primary);">أبرز <span class="gradient-text">المشاريع</span></span>
             </h3>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
@@ -703,12 +770,12 @@
                                 <i data-lucide="brain-circuit" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Agentic AI Financial Analysis</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Autonomous multi-agent system using LangChain for in-depth financial intelligence and analysis for SMEs.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">تحليل مالي بالذكاء الاصطناعي الوكيلي</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">نظام متعدد الوكلاء بشكل مستقل باستخدام LangChain لتقديم ذكاء وتحليل مالي متعمق للشركات الصغيرة والمتوسطة.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="experience/iiot-ai-developer.html#project-financial-ai" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="experience/iiot-ai-developer_arabic.html#project-financial-ai" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -720,12 +787,12 @@
                                 <i data-lucide="message-square-text" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Advanced AI RAG Chatbot</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Multi-modal Vision RAG system with Anthropic's Contextual Retrieval for industrial diagnostics and technical documentation.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">مساعد RAG ذكي متقدم</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">نظام Vision RAG متعدد الوسائط مع الاسترجاع السياقي من Anthropic للتشخيص الصناعي والوثائق الفنية.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="experience/iiot-ai-developer.html#project-industrial-chatbot" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="experience/iiot-ai-developer_arabic.html#project-industrial-chatbot" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -741,12 +808,12 @@
                                 <a href="https://www.youtube.com/live/kWCi1mnxssY?si=SNKV_TMWV7p57Y74" target="_blank" class="p-2 rounded-lg transition-all" style="color: var(--text-tertiary);" onmouseover="this.style.background='linear-gradient(135deg, #14b8a6 0%, #0891b2 100%)'; this.style.color='white';" onmouseout="this.style.background=''; this.style.color='var(--text-tertiary)';"><i data-lucide="youtube"></i></a>
                             </div>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Vision-Guided Robotics Coffee Delivery</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">An AI-powered system integrating perception, manipulation, and motion planning to fully automate coffee delivery.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">توصيل القهوة بالروبوتات الموجهة بالرؤية</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">نظام مدعوم بالذكاء الاصطناعي يدمج الإدراك والمناولة وتخطيط الحركة لأتمتة توصيل القهوة بالكامل.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="projects/coffee-delivery-capstone.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="projects/coffee-delivery-capstone_arabic.html" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -758,12 +825,12 @@
                                 <i data-lucide="warehouse" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">Autonomous Warehouse Robot</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Completed a three-phase automation for the RB-1 robot, from hardcoded paths to full autonomy using SLAM.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">روبوت مستودعات ذاتي القيادة</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">أنجزت أتمتة من ثلاث مراحل لروبوت RB-1 بدءًا من المسارات الثابتة وحتى الاستقلال الكامل باستخدام SLAM.</p>
                     </div>
                      <div class="mt-4">
-                        <a href="projects/warehouse-robot.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="projects/warehouse-robot_arabic.html" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -775,12 +842,12 @@
                                 <i data-lucide="grab" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">UR3e Vision-Guided Manipulation</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Vision-guided manipulation for the UR3e robotic arm, from hardcoded movements to advanced 3D perception-based control.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">مناولة UR3e الموجهة بالرؤية</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">مناولة موجهة بالرؤية لذراع UR3e الروبوتية، بدءًا من الحركات المبرمجة مسبقًا وحتى التحكم المتقدم المعتمد على الإدراك ثلاثي الأبعاد.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="projects/ur3e-arm-manipulation.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="projects/ur3e-arm-manipulation_arabic.html" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -792,12 +859,12 @@
                                 <i data-lucide="navigation" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">ROSbot XL PID Navigation</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Autonomous maze navigation using PID control and vision-based obstacle detection for precise movement.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">ملاحة ROSbot XL باستخدام PID</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">ملاحة ذاتية في المتاهات باستخدام تحكم PID وكشف العوائق بالرؤية لتحقيق حركة دقيقة.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="projects/rosbot-xl-navigation.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="projects/rosbot-xl-navigation_arabic.html" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -809,12 +876,12 @@
                                 <i data-lucide="cpu" class="text-white w-8 h-8"></i>
                             </span>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">TurtleBot3 Physical Robot Assembly</h4>
-                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">Built a physical TurtleBot3 robot from scratch, integrating ROS1/ROS2 dual communication and implementing SLAM for autonomous mapping.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">تجميع روبوت TurtleBot3 الفعلي</h4>
+                        <p class="mt-2 text-sm" style="color: var(--text-tertiary);">قمت ببناء روبوت TurtleBot3 فعلي من الصفر مع دمج اتصال مزدوج ROS1/ROS2 وتنفيذ SLAM لرسم الخرائط الذاتية.</p>
                     </div>
                     <div class="mt-4">
-                        <a href="projects/turtlebot3-mapping.html" class="learn-more-btn w-full inline-block text-center py-2 px-4 rounded-lg transition" style="text-decoration: none;">
-                            View Full Details
+                        <a href="projects/turtlebot3-mapping_arabic.html" class="learn-more-btn project-cta">
+                            عرض التفاصيل
                         </a>
                     </div>
                 </div>
@@ -827,14 +894,14 @@
                             </span>
                             <i data-lucide="arrow-up-right" style="color: var(--text-tertiary);"></i>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">FerroZone E-commerce Website</h4>
-                        <p class="mt-2" style="color: var(--text-tertiary);">A modern and responsive website for a glasses brand, ensuring a smooth shopping experience with clean UI/UX.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">موقع FerroZone للتجارة الإلكترونية</h4>
+                        <p class="mt-2" style="color: var(--text-tertiary);">موقع حديث ومتجاوب لعلامة تجارية للنظارات يضمن تجربة تسوق سلسة مع واجهة وتجربة استخدام نظيفة.</p>
                     </div>
                     <div class="mt-4 flex flex-wrap gap-2">
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">HTML/CSS</span>
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">JavaScript</span>
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">UI/UX</span>
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">E-commerce</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">تجارة إلكترونية</span>
                     </div>
                 </a>
                 <!-- Project 8 -->
@@ -846,12 +913,12 @@
                             </span>
                             <i data-lucide="arrow-up-right" style="color: var(--text-tertiary);"></i>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">AlMaahirat Educational Platform</h4>
-                        <p class="mt-2" style="color: var(--text-tertiary);">An educational platform for courses and programs, incorporating an intuitive layout and user-friendly design.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">منصة الماهرات التعليمية</h4>
+                        <p class="mt-2" style="color: var(--text-tertiary);">منصة تعليمية للدورات والبرامج بتصميم واضح وسهل الاستخدام.</p>
                     </div>
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">Frontend</span>
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">Web Development</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">واجهة أمامية</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">تطوير ويب</span>
                         <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">UI/UX</span>
                     </div>
                 </a>
@@ -864,13 +931,13 @@
                             </span>
                             <i data-lucide="arrow-up-right" style="color: var(--text-tertiary);"></i>
                         </div>
-                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">IIoT Solutions Corporate Website</h4>
-                        <p class="mt-2" style="color: var(--text-tertiary);">Corporate website for industrial services, optimizing front-end performance, responsiveness, and aesthetics.</p>
+                        <h4 class="text-xl font-bold" style="color: var(--text-primary);">الموقع المؤسسي لـ IIoT Solutions</h4>
+                        <p class="mt-2" style="color: var(--text-tertiary);">موقع مؤسسي للخدمات الصناعية مع تحسين أداء الواجهة الأمامية والتجاوب والجماليات.</p>
                     </div>
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">WebDev</span>
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">Performance</span>
-                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">Branding</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">تطوير ويب</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">أداء</span>
+                        <span class="text-xs bg-sky-900/50 text-sky-300 py-1 px-3 rounded-full">هوية بصرية</span>
                     </div>
                 </a>
             </div>
@@ -879,7 +946,7 @@
         <!-- Skills Section -->
         <section id="skills" class="py-20">
             <h3 class="text-3xl md:text-4xl font-bold mb-12 text-center scroll-animation">
-                <span style="color: var(--text-primary);">My <span class="gradient-text">Technical Skills</span></span>
+                <span style="color: var(--text-primary);"><span class="gradient-text">مهاراتي التقنية</span></span>
             </h3>
             <div class="flex flex-wrap justify-center gap-4 scroll-animation">
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">Python</span>
@@ -902,7 +969,7 @@
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">SLAM</span>
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">FastAPI</span>
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">React</span>
-                <span class="skill-tag py-2 px-5 rounded-lg font-medium">Full-Stack Dev</span>
+                <span class="skill-tag py-2 px-5 rounded-lg font-medium">تطوير متكامل</span>
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">SQL</span>
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">Pandas / NumPy</span>
                 <span class="skill-tag py-2 px-5 rounded-lg font-medium">Vector DBs</span>
@@ -916,13 +983,13 @@
 
         <!-- Contact Section -->
         <section id="contact" class="py-20 text-center">
-            <h3 class="text-3xl md:text-4xl font-bold scroll-animation mb-4" style="color: var(--text-primary);">Get In <span class="gradient-text">Touch</span></h3>
+            <h3 class="text-3xl md:text-4xl font-bold scroll-animation mb-4" style="color: var(--text-primary);">ابقَ على <span class="gradient-text">تواصل</span></h3>
             <p class="mt-4 max-w-xl mx-auto scroll-animation text-lg" style="color: var(--text-tertiary);">
-                I'm currently open to new opportunities and collaborations. Feel free to reach out if you have a project in mind, want to connect, or just want to say hi!
+                أنا منفتح حاليًا على الفرص الجديدة والتعاون. يسعدني تواصلك إذا كان لديك مشروع، أو رغبت بالتعارف، أو حتى لإلقاء التحية.
             </p>
             <div class="mt-8 scroll-animation">
                 <a href="mailto:hamzaferoze115@gmail.com" class="text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 inline-block text-lg" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%); box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 40px rgba(6, 182, 212, 0.6)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 8px 30px rgba(59, 130, 246, 0.4)';">
-                    Say Hello
+                    راسلني
                 </a>
             </div>
              <div class="mt-12 flex flex-wrap justify-center items-center gap-6 scroll-animation">
@@ -940,7 +1007,7 @@
     </main>
 
     <footer class="text-center py-8" style="color: var(--text-quaternary);">
-        <p class="font-medium">Designed & Built with <span style="color: #14b8a6;">♥</span> by <span class="gradient-text">Hamza Feroze</span></p>
+        <p class="font-medium">صُمم وطُوّر بكل <span style="color: #14b8a6;">♥</span> بواسطة <span class="gradient-text">حمزة فيروز</span></p>
     </footer>
 
     <!-- Project Modal -->

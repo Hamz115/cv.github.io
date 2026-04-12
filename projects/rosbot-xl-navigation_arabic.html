@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملاحة ROSbot XL باستخدام PID وتجنب العوائق | حمزة فيروز</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="../assets/js/tailwind.js"></script>
+    <link href="../assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="../assets/js/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #fafbfd;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1f36;
+            --text-secondary: #2d3748;
+            --text-tertiary: #4a5568;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-secondary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 50%, #1e293b 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(37, 45, 61, 0.8);
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-right: 4px solid #06b6d4;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            padding: 1rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 100%);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-right: 3px solid #3b82f6;
+        }
+
+        [data-theme="dark"] .feature-item {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        [data-theme="dark"] .tech-tag {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .theme-toggle {
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
+            position: absolute;
+        }
+
+        .theme-toggle:hover .theme-icon { color: white; }
+        [data-theme="light"] .theme-icon.sun { opacity: 0; }
+        [data-theme="light"] .theme-icon.moon { opacity: 1; position: relative; }
+        [data-theme="dark"] .theme-icon.sun { opacity: 1; position: relative; }
+        [data-theme="dark"] .theme-icon.moon { opacity: 0; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .impact-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center" dir="ltr">
+            <a href="../index_arabic.html#projects" class="back-button" dir="rtl">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                العودة إلى المعرض الشخصي
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+                <a href="../index_arabic.html" class="text-xl font-bold gradient-text">حمزة فيروز</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="navigation" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">مشروع مرحلي</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">ملاحة ROSbot XL باستخدام PID</h1>
+                <p class="text-2xl font-semibold mb-6 opacity-90">The Construct Robotics Masterclass</p>
+                <p class="text-xl opacity-90 leading-relaxed max-w-3xl mx-auto">
+                    نظام ملاحة ذاتية داخل المتاهات يعتمد على تحكم PID وكشف العوائق بالرؤية لإجراء تعديلات دقيقة على الحركة والاتجاه.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-5xl">
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">نظرة عامة على المشروع</h2>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                تمحور هذا المشروع المرحلي حول تطوير نظام ملاحة ذاتية لروبوت ROSbot XL، وهو روبوت هولونومي ذو أربع عجلات، باستخدام تحكم PID (التناسبي-التكاملي-التفاضلي) لإجراء تصحيحات دقيقة ومستمرة في الحركة. وكان التحدي هو برمجة الروبوت للتنقل داخل بيئة متاهة معقدة مع كشف العوائق والتكيف مع المسار بشكل ديناميكي.
+            </p>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                يوضح هذا النظام تطبيقاً عملياً متقدماً لنظرية التحكم في الروبوتات، من خلال دمج الإدراك القائم على الحساسات مع التحكم بالتغذية الراجعة لتحقيق ملاحة سلسة ودقيقة داخل المساحات الضيقة.
+            </p>
+        </section>
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">دوري</h2>
+            <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                قمت بتطوير وضبط نظام التحكم الكامل للملاحة، وشمل ذلك:
+            </p>
+            <ul class="mt-4 space-y-3 text-lg" style="color: var(--text-tertiary);">
+                <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i><span>تنفيذ خوارزميات تحكم PID للتحكم في السرعة والاتجاه</span></li>
+                <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i><span>ضبط معاملات PID ‏(Kp وKi وKd) للوصول إلى أفضل أداء</span></li>
+                <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i><span>دمج كشف العوائق القائم على الرؤية باستخدام حساسات الكاميرا</span></li>
+                <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i><span>برمجة تعديلات ديناميكية للسرعة والاتجاه بناءً على البيئة المحيطة</span></li>
+                <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1"></i><span>اختبار النظام والتحقق من نجاح الملاحة داخل سيناريوهات متاهة معقدة</span></li>
+            </ul>
+        </section>
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">الميزات الرئيسية والتنفيذ</h2>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                    نظام التحكم PID
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    نفذت متحكماً متقدماً من نوع PID يقوم بتعديل سرعة الروبوت واتجاهه بشكل مستمر اعتماداً على التغذية الراجعة من الحساسات. ويحسب المتحكم قيم الخطأ بين الحالة المطلوبة والحالة الفعلية، مما يحقق حركة ناعمة ودقيقة عبر الحدود التناسبية والتكاملية والتفاضلية.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="eye" class="w-6 h-6 text-cyan-600"></i>
+                    كشف العوائق بالرؤية الحاسوبية
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    قمت بدمج إدراك قائم على الكاميرا لاكتشاف العوائق والجدران في الوقت الحقيقي. يعالج نظام الرؤية بث الكاميرا لتحديد احتمالات الاصطدام ويوفر تغذية راجعة مهمة لخوارزمية الملاحة من أجل تجنب العوائق بفعالية.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="git-branch" class="w-6 h-6 text-teal-600"></i>
+                    تعديل المسار بشكل ديناميكي
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    تمت برمجة الروبوت ليعدل سرعته واتجاهه بصورة ديناميكية وفق البيئة المكتشفة. يبطئ قرب العوائق، ويتسارع في المناطق المفتوحة، وينفذ المنعطفات بسلاسة مستفيداً من قدرات القيادة الهولونومية.
+                </p>
+            </div>
+
+            <div class="feature-item">
+                <h3 class="text-xl font-bold mb-2 flex items-center gap-2" style="color: var(--text-primary);">
+                    <i data-lucide="gauge" class="w-6 h-6 text-blue-600"></i>
+                    الملاحة داخل المتاهة
+                </h3>
+                <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                    نجح النظام في تنفيذ ملاحة ذاتية داخل متاهة معقدة، موضحاً قدرة الروبوت على التعامل مع الزوايا الضيقة والممرات المحدودة وتوزيعات العوائق المختلفة مع الحفاظ على ثبات التحكم.
+                </p>
+            </div>
+        </section>
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">التقنيات المستخدمة</h2>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="tech-tag">ROS (Robot Operating System)</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">PID Control</span>
+                <span class="tech-tag">Computer Vision</span>
+                <span class="tech-tag">OpenCV</span>
+                <span class="tech-tag">Holonomic Drive</span>
+                <span class="tech-tag">ROSbot XL</span>
+                <span class="tech-tag">Sensor Fusion</span>
+                <span class="tech-tag">Gazebo Simulation</span>
+                <span class="tech-tag">Obstacle Avoidance</span>
+                <span class="tech-tag">RViz</span>
+            </div>
+        </section>
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">عرض الملاحة داخل المتاهة</h2>
+            <div class="mb-4">
+                <img src="../Rosbot.jpg" alt="ملاحة ROSbot XL الذاتية داخل المتاهة" class="w-full rounded-lg shadow-lg" style="max-height: 600px; object-fit: contain;">
+                <p class="text-center mt-4 text-lg" style="color: var(--text-tertiary);">روبوت ROSbot XL يتنقل داخل المتاهة باستخدام تحكم PID وكشف العوائق بالرؤية</p>
+            </div>
+        </section>
+
+        <section class="project-card">
+            <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">الأثر ومخرجات التعلم</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="impact-badge"><div class="text-4xl font-bold mb-2">PID</div><div class="text-sm">تنفيذ التحكم</div></div>
+                <div class="impact-badge"><div class="text-4xl font-bold mb-2">Vision</div><div class="text-sm">كشف العوائق</div></div>
+                <div class="impact-badge"><div class="text-4xl font-bold mb-2">Holonomic</div><div class="text-sm">التحكم بالقيادة</div></div>
+            </div>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                منحني هذا المشروع خبرة عملية مباشرة في مفاهيم التحكم الأساسية المطبقة على الأنظمة الروبوتية الحقيقية:
+            </p>
+            <ul class="space-y-2" style="color: var(--text-tertiary);">
+                <li class="flex items-start gap-2"><i data-lucide="chevron-left" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i><span>فهم عميق لنظرية تحكم PID وكيفية ضبط معاملاتها</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="chevron-left" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i><span>دمج أنظمة الرؤية لتحقيق إدراك لحظي للبيئة</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="chevron-left" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i><span>برمجة أنظمة قيادة هولونومية للحركة متعددة الاتجاهات</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="chevron-left" class="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1"></i><span>تطوير خوارزميات ملاحة قوية للبيئات المقيدة والمعقدة</span></li>
+            </ul>
+        </section>
+
+        <div class="mt-12">
+            <a href="../index_arabic.html#projects" class="back-button">
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                <span>العودة إلى المعرض الشخصي</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8" style="color: var(--text-tertiary);">
+        <p class="font-medium">تم التصميم والبناء بكل <span style="color: #14b8a6;">♥</span> بواسطة <span class="gradient-text">حمزة فيروز</span></p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>

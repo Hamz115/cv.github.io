@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماستر كلاس الروبوتات من The Construct - حمزة فيروز</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2314b8a6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='Arial, sans-serif' font-size='50' font-weight='bold' text-anchor='middle' fill='white'%3EHF%3C/text%3E%3C/svg%3E">
+    <script src="../assets/js/tailwind.js"></script>
+    <link href="../assets/fonts/inter/inter.css" rel="stylesheet">
+    <script src="../assets/js/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #fafbfd;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1f36;
+            --text-secondary: #2d3748;
+            --text-tertiary: #4a5568;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfeff 50%, #f0fdfa 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-secondary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 50%, #1e293b 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .glass-effect {
+            background: rgba(37, 45, 61, 0.8);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            color: white;
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-right: 4px solid #06b6d4;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        .project-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #14b8a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        [data-theme="dark"] .tech-tag {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            color: #7dd3fc;
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-right: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "←";
+            position: absolute;
+            right: 0;
+            color: #06b6d4;
+            font-weight: bold;
+        }
+
+        .view-project-btn {
+            background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+            text-decoration: none;
+        }
+
+        .view-project-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5);
+        }
+
+        .theme-toggle {
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease, color 0.3s ease;
+            position: absolute;
+        }
+        .theme-toggle:hover .theme-icon {
+            color: white;
+        }
+        [data-theme="light"] .theme-icon.sun { opacity: 0; position: absolute; }
+        [data-theme="light"] .theme-icon.moon { opacity: 1; position: relative; color: var(--text-primary) !important; }
+        [data-theme="dark"] .theme-icon.sun { opacity: 1; position: relative; color: var(--text-primary) !important; }
+        [data-theme="dark"] .theme-icon.moon { opacity: 0; position: absolute; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center" dir="ltr">
+            <a href="../index_arabic.html#education" class="back-button" dir="rtl">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                العودة إلى المعرض الشخصي
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="sun" class="theme-icon sun"></i>
+                    <i data-lucide="moon" class="theme-icon moon"></i>
+                </div>
+                <a href="../index_arabic.html" class="text-xl font-bold gradient-text">حمزة فيروز</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">شهادة احترافية</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">ماستر كلاس الروبوتات من The Construct</h1>
+                <p class="text-2xl font-semibold mb-6 opacity-90">برنامج متقدم لتطوير ROS</p>
+                <p class="text-xl opacity-90 leading-relaxed max-w-3xl mx-auto">
+                    برنامج تدريبي شامل في الروبوتات يغطي الملاحة الذاتية والرؤية الحاسوبية وتخطيط الحركة والتحكم والمناولة، من خلال مشاريع عملية مرحلية ومشروع نهائي متكامل.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-16 max-w-5xl">
+
+        <section class="mb-16">
+            <div class="project-card">
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-primary);">نظرة عامة على البرنامج</h2>
+                <p class="text-lg leading-relaxed mb-4" style="color: var(--text-tertiary);">
+                    ماستر كلاس الروبوتات من The Construct هو برنامج مكثف قائم على المشاريع ويركز على تطوير ROS على مستوى احترافي. يتدرج المنهج عبر عدة مشاريع مرحلية توضح المفاهيم الأساسية في الروبوتات، وينتهي بمشروع نهائي شامل يدمج عدة أنظمة متقدمة في حل واحد.
+                </p>
+                <p class="text-lg leading-relaxed" style="color: var(--text-tertiary);">
+                    كل مشروع يبني على ما قبله، بحيث ينتقل المسار من الملاحة والتحكم الأساسيين إلى أنظمة مناولة متقدمة تعتمد على الإدراك والرؤية.
+                </p>
+            </div>
+        </section>
+
+        <section id="checkpoint-rosbot" class="mb-16">
+            <div class="project-card">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="project-number">1</div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">المرحلة 1: ROSbot XL - الملاحة باستخدام PID</h2>
+                        <p class="text-lg" style="color: var(--text-tertiary);">ملاحة ذاتية داخل المتاهة باستخدام التحكم PID</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">ملخص المشروع</h3>
+                    <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                        طورت نظام ملاحة ذاتياً لروبوت ROSbot XL ذي الحركة الشمولية، مع تطبيق خوارزميات PID للتحكم الدقيق في الحركة داخل بيئات متاهة معقدة. يدمج النظام بين اكتشاف العوائق المعتمد على الرؤية والتحكم الراجع لتحقيق حركة سلسة ومستقرة.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">أبرز الإنجازات</h3>
+                    <ul class="feature-list" style="color: var(--text-tertiary);">
+                        <li>تطبيق وضبط خوارزميات PID للسرعة والاتجاه</li>
+                        <li>دمج اكتشاف العوائق بالكاميرا للإدراك اللحظي</li>
+                        <li>برمجة تعديلات ديناميكية للسرعة والاتجاه</li>
+                        <li>تحقيق ملاحة ذاتية ناجحة داخل سيناريوهات متاهة معقدة</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التقنيات</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">ROS</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">PID Control</span>
+                        <span class="tech-tag">Computer Vision</span>
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">Gazebo</span>
+                    </div>
+                </div>
+
+                <a href="../projects/rosbot-xl-navigation_arabic.html" class="view-project-btn">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span>عرض تفاصيل المشروع كاملة</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="checkpoint-ur3e" class="mb-16">
+            <div class="project-card">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="project-number">2</div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">المرحلة 2: المناولة الموجهة بالرؤية لذراع UR3e</h2>
+                        <p class="text-lg" style="color: var(--text-tertiary);">من الحركات المبرمجة مسبقاً إلى التحكم المعتمد على الإدراك ثلاثي الأبعاد</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">ملخص المشروع</h3>
+                    <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                        طورت قدرات مناولة متقدمة لذراع UR3e الروبوتية عبر مسار من مرحلتين. بدأت بتحكم أساسي في المفاصل بحركات مبرمجة مسبقاً، ثم انتقلت إلى الإدراك المعتمد على الرؤية الحاسوبية باستخدام السحب النقطية وMoveIt! لتنفيذ مناولة ذكية للأجسام.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">أبرز الإنجازات</h3>
+                    <ul class="feature-list" style="color: var(--text-tertiary);">
+                        <li>برمجة الحركيات الأمامية والعكسية للتحكم الدقيق بالذراع</li>
+                        <li>تطبيق معالجة السحب النقطية للإدراك ثلاثي الأبعاد للأجسام</li>
+                        <li>دمج إطار MoveIt! لتخطيط الحركة المتقدم</li>
+                        <li>تطوير عمليات التقاط ووضع موجهة بالرؤية</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التقنيات</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">ROS</span>
+                        <span class="tech-tag">MoveIt!</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Point Cloud Library</span>
+                        <span class="tech-tag">3D Vision</span>
+                        <span class="tech-tag">Inverse Kinematics</span>
+                    </div>
+                </div>
+
+                <a href="../projects/ur3e-arm-manipulation.html" class="view-project-btn">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span>عرض تفاصيل المشروع كاملة</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="checkpoint-warehouse" class="mb-16">
+            <div class="project-card">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="project-number">3</div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">المرحلة 3: روبوت المستودع الذاتي</h2>
+                        <p class="text-lg" style="color: var(--text-tertiary);">تدرج من ثلاث مراحل للوصول إلى الاستقلالية الكاملة باستخدام SLAM</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">ملخص المشروع</h3>
+                    <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                        طورت تدريجياً قدرات ذاتية لروبوت المستودع RB-1 عبر ثلاث مراحل واضحة: ملاحة مبرمجة مسبقاً، ثم بناء خرائط وتموضع باستخدام SLAM، وأخيراً تشغيل ذاتي كامل مع تخطيط مسار ديناميكي وتجنب للعوائق.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">أبرز الإنجازات</h3>
+                    <ul class="feature-list" style="color: var(--text-tertiary);">
+                        <li>تطبيق SLAM باستخدام Gmapping لبناء الخرائط لحظياً</li>
+                        <li>إعداد ROS Navigation Stack لتخطيط المسار الذاتي</li>
+                        <li>تطوير اكتشاف العوائق وإعادة التخطيط الديناميكي</li>
+                        <li>تحقيق عمليات التقاط وتسليم للرفوف بشكل ذاتي بالكامل</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التقنيات</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">ROS</span>
+                        <span class="tech-tag">SLAM (Gmapping)</span>
+                        <span class="tech-tag">Navigation Stack</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Path Planning</span>
+                        <span class="tech-tag">Sensor Fusion</span>
+                    </div>
+                </div>
+
+                <a href="../projects/warehouse-robot.html" class="view-project-btn">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span>عرض تفاصيل المشروع كاملة</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="checkpoint-turtlebot3" class="mb-16">
+            <div class="project-card">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="project-number">4</div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">المرحلة 4: تجميع الروبوت الفعلي TurtleBot3</h2>
+                        <p class="text-lg" style="color: var(--text-tertiary);">تجميع العتاد ودمج ROS1/ROS2 وبناء خرائط ذاتية</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">ملخص المشروع</h3>
+                    <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                        أنجزت التجميع الكامل وبرمجة روبوت TurtleBot3 فعلي باستخدام Raspberry Pi. كما نجحت في دمج حزم الملاحة لكل من ROS1 وROS2، مع تطبيق التمركز وبناء الخرائط باستخدام SLAM ليتمكن الروبوت من الاستكشاف الذاتي وبناء خريطة والتنقل دون مسارات محددة مسبقاً.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">أبرز الإنجازات</h3>
+                    <ul class="feature-list" style="color: var(--text-tertiary);">
+                        <li>تجميع عتاد TurtleBot3 فعلياً من المكونات</li>
+                        <li>إعداد Raspberry Pi لأنظمة التحكم الروبوتي</li>
+                        <li>دمج أطر الملاحة لكل من ROS1 وROS2</li>
+                        <li>تطبيق SLAM باستخدام Gmapping وCartographer لبناء خرائط ذاتية</li>
+                        <li>تحقيق قدرات استكشاف وتنقل ذاتي</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التقنيات</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">TurtleBot3</span>
+                        <span class="tech-tag">Hardware Assembly</span>
+                        <span class="tech-tag">Raspberry Pi</span>
+                        <span class="tech-tag">ROS1</span>
+                        <span class="tech-tag">ROS2</span>
+                        <span class="tech-tag">SLAM (Gmapping)</span>
+                        <span class="tech-tag">Cartographer</span>
+                        <span class="tech-tag">Autonomous Navigation</span>
+                    </div>
+                </div>
+
+                <a href="../projects/turtlebot3-mapping.html" class="view-project-btn">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span>عرض تفاصيل المشروع كاملة</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="capstone-coffee" class="mb-16">
+            <div class="project-card" style="border-right-color: #14b8a6;">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="project-number" style="background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%);">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" style="color: var(--text-primary);">المشروع النهائي: توصيل القهوة الموجه بالرؤية</h2>
+                        <p class="text-lg" style="color: var(--text-tertiary);">نظام روبوتي متكامل للمناولة يعمل بالذكاء الاصطناعي من البداية للنهاية</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">ملخص المشروع</h3>
+                    <p class="leading-relaxed" style="color: var(--text-tertiary);">
+                        دمج المشروع النهائي جميع المهارات المكتسبة في الماستر كلاس ضمن نظام شامل: روبوت توصيل قهوة ذاتي بالكامل يستخدم YOLOv8 للرؤية الحاسوبية لاكتشاف الهدف، وMoveIt! لتخطيط الحركة، مع مناورة روبوتية دقيقة لالتقاط أكواب القهوة ووضعها دون انسكاب.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">أبرز الإنجازات</h3>
+                    <ul class="feature-list" style="color: var(--text-tertiary);">
+                        <li>تدريب نموذج YOLOv8 مخصص لاكتشاف الأهداف في الوقت الحقيقي</li>
+                        <li>تنفيذ معمارية ROS كاملة تنسق بين الرؤية والتخطيط والتحكم</li>
+                        <li>تطوير تخطيط مسار Cartesian خالٍ من التصادم باستخدام MoveIt!</li>
+                        <li>تحقيق تشغيل ذاتي بنسبة 100% من الإدراك إلى التنفيذ</li>
+                        <li>عرض ناجح في تقديم حي مباشر على يوتيوب (مدة 1:33:33)</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التقنيات</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">ROS</span>
+                        <span class="tech-tag">YOLOv8</span>
+                        <span class="tech-tag">MoveIt!</span>
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Computer Vision</span>
+                        <span class="tech-tag">Motion Planning</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 flex-wrap">
+                    <a href="../projects/coffee-delivery-capstone_arabic.html" class="view-project-btn">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        <span>عرض تفاصيل المشروع كاملة</span>
+                    </a>
+                    <a href="https://github.com/Hamz115/Starbot_Delivery" target="_blank" class="view-project-btn" style="background: linear-gradient(135deg, #24292e 0%, #1a1e22 100%);">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                        <span>عرض على GitHub</span>
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=kWCi1mnxssY" target="_blank" class="view-project-btn" style="background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                        <span>مشاهدة العرض</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="project-card">
+                <h2 class="text-3xl font-bold mb-6" style="color: var(--text-primary);">أثر البرنامج والمهارات المكتسبة</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">الكفاءات الأساسية</h3>
+                        <ul class="feature-list" style="color: var(--text-tertiary);">
+                            <li>معمارية وتطوير متقدم لـ ROS وROS2</li>
+                            <li>تخطيط الحركة وتحسين المسارات</li>
+                            <li>أنظمة الرؤية الحاسوبية والإدراك</li>
+                            <li>SLAM والملاحة الذاتية</li>
+                            <li>المناولة الروبوتية ونظرية التحكم</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">التطوير المهني</h3>
+                        <ul class="feature-list" style="color: var(--text-tertiary);">
+                            <li>تكامل الأنظمة واستكشاف الأعطال</li>
+                            <li>تخطيط المشاريع وتنفيذها</li>
+                            <li>التوثيق التقني والعرض التقديمي</li>
+                            <li>استراتيجيات نشر الروبوتات في العالم الحقيقي</li>
+                            <li>أفضل الممارسات وفق معايير الصناعة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-12">
+            <a href="../index_arabic.html#education" class="back-button">
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                <span>العودة إلى المعرض الشخصي</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8" style="color: var(--text-tertiary);">
+        <p class="font-medium">تم التصميم والبناء بكل <span style="color: #14b8a6;">♥</span> بواسطة <span class="gradient-text">حمزة فيروز</span></p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+        themeToggle.addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
